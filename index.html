@@ -59,18 +59,38 @@
 </div>
 
 <script>
-// === 🛡️ 簡易密碼鎖開始 ===
-    const MY_PASSWORD = "a76631241a4ad4528be06e6f6112b7211a00cefac243a6e46e6dab61f592e861"; // <-- 在這裡設定你的密碼
+// ⚠️ 注意：為了使用 await 計算雜湊，我們必須用 (async function(){ ... })(); 把整段程式包起來
+(async function() { 
+
+    // === 🛡️ 簡易密碼鎖開始 (修正版) ===
     
+    // 這是你原本那串 SHA-256 雜湊碼
+    const MY_PASSWORD_HASH = "a76631241a4ad4528be06e6f6112b7211a00cefac243a6e46e6dab61f592e861"; 
+
+    // 1. 定義計算雜湊的工具函式
+    async function sha256(message) {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+    
+    // 2. 跳出輸入框
     let userPass = prompt("🔒 請輸入戰情室密碼：");
-    if (userPass !== MY_PASSWORD) {
+    
+    // 3. 關鍵修改：把你輸入的密碼拿去算雜湊 (await 等待運算完成)
+    let inputHash = await sha256(userPass || ""); 
+
+    // 4. 比對「雜湊值」是否相同
+    if (inputHash !== MY_PASSWORD_HASH) {
         document.body.innerHTML = "<h1 style='color:#cf6679;text-align:center;margin-top:20%'>🚫 拒絕訪問：密碼錯誤</h1>";
-        throw new Error("密碼錯誤，停止執行"); // 這行會強制停止後面的程式連線資料庫
+        throw new Error("密碼錯誤，停止執行"); 
     }
     // === 🛡️ 簡易密碼鎖結束 ===
 
-    // ...下面接著原本的 firebaseConfig ...    
-// 2. 初始化 Firebase (這裡用的是全域變數 firebase，不是 import)
+
+    // ... 以下是你原本的 Firebase 程式碼 (完全不用動) ...
+
     const firebaseConfig = {
         apiKey: "AIzaSyC98g3JuqPtStZ4P25YZ8trqfWpUJss3vI",
         authDomain: "financial-records-76092.firebaseapp.com",
@@ -81,16 +101,14 @@
         measurementId: "G-S6Z26CCGJK"
     };
 
-    // 初始化 App
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore(); // 取得資料庫實例
+    const db = firebase.firestore(); 
     const COLLECTION_NAME = "finance_records"; 
 
     let chart; 
     document.getElementById('inputDate').valueAsDate = new Date();
     document.getElementById('loading').style.display = 'block';
 
-    // 3. 監聽資料庫 (使用 compat 語法: db.collection)
     db.collection(COLLECTION_NAME).orderBy("date", "asc")
     .onSnapshot((querySnapshot) => {
         const financeData = [];
@@ -107,7 +125,6 @@
         alert("讀取失敗！請檢查 Firebase Console Rules 或按 F12 看詳細錯誤。");
     });
 
-    // 4. 新增功能
     document.getElementById('addBtn').addEventListener('click', function() {
         const date = document.getElementById('inputDate').value;
         const assets = Number(document.getElementById('inputAssets').value);
@@ -119,7 +136,6 @@
         btn.disabled = true;
         btn.innerText = "上傳中...";
 
-        // 寫入資料
         db.collection(COLLECTION_NAME).add({
             date: date,
             assets: assets,
@@ -139,7 +155,6 @@
         });
     });
 
-    // 5. 刪除功能 (需掛載到 window 才能被 HTML onclick 呼叫)
     window.deleteData = function(id) {
         if(confirm('確定刪除？')) {
             db.collection(COLLECTION_NAME).doc(id).delete().catch(error => {
@@ -149,7 +164,6 @@
         }
     };
 
-    // 渲染 UI
     function updateDashboard(data) {
         if (data.length === 0) return;
         const latest = data[data.length - 1];
@@ -182,7 +196,10 @@
             options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { x: { grid: { color: '#333' } }, y: { grid: { color: '#333' } } } }
         });
     }
+
+})(); // <-- 最底下這裡記得要有一對括號，這會讓上面的程式立刻執行
 </script>
 </body>
 </html>
+
 
