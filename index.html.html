@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INTP 雲端財務戰情室</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <style>
+        :root { --bg-color: #121212; --card-bg: #1e1e1e; --text-main: #e0e0e0; --text-sec: #a0a0a0; --accent: #bb86fc; --positive: #03dac6; --negative: #cf6679; }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg-color); color: var(--text-main); margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 800px; width: 100%; }
+        h1 { text-align: center; color: var(--accent); margin-bottom: 30px; }
+        .dashboard { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+        .card { background-color: var(--card-bg); padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .card h3 { margin: 0 0 10px 0; font-size: 1rem; color: var(--text-sec); }
+        .card .amount { font-size: 1.5rem; font-weight: bold; }
+        .input-section { background-color: var(--card-bg); padding: 25px; border-radius: 12px; margin-bottom: 30px; }
+        .form-group { display: flex; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+        input { background-color: #2c2c2c; border: 1px solid #333; color: white; padding: 12px; border-radius: 6px; flex: 1; }
+        button { background-color: var(--accent); color: black; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%; transition: 0.2s; }
+        button:hover { opacity: 0.9; }
+        .chart-container { background-color: var(--card-bg); padding: 20px; border-radius: 12px; height: 400px; position: relative; }
+        table { width: 100%; border-collapse: collapse; margin-top: 30px; background-color: var(--card-bg); border-radius: 12px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid #333; }
+        th { background-color: #2c2c2c; color: var(--accent); }
+        .delete-btn { background-color: var(--negative); color: white; padding: 5px 10px; font-size: 0.8rem; border-radius: 4px; cursor: pointer; border: none; }
+        .loader { border: 4px solid #333; border-top: 4px solid var(--accent); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>財務戰情室</h1>
+    <div class="dashboard">
+        <div class="card"><h3>總資產</h3><div class="amount" id="displayAssets" style="color: var(--positive)">$0</div></div>
+        <div class="card"><h3>總負債</h3><div class="amount" id="displayLiabilities" style="color: var(--negative)">$0</div></div>
+        <div class="card"><h3>淨資產</h3><div class="amount" id="displayNetWorth">$0</div></div>
+    </div>
+    <div class="input-section">
+        <h3 style="margin-top: 0;">📝 新增紀錄</h3>
+        <div class="form-group">
+            <input type="date" id="inputDate">
+            <input type="number" id="inputAssets" placeholder="總資產">
+            <input type="number" id="inputLiabilities" placeholder="總負債">
+        </div>
+        <button id="addBtn">上傳</button>
+    </div>
+    <div id="loading" class="loader"></div>
+    <div class="chart-container"><canvas id="financeChart"></canvas></div>
+    <table id="historyTable">
+        <thead><tr><th>日期</th><th>資產</th><th>負債</th><th>淨資產</th><th>操作</th></tr></thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+<script>
+// === 🛡️ 簡易密碼鎖開始 ===
+    const MY_PASSWORD = "F130388620"; // <-- 在這裡設定你的密碼
+    
+    let userPass = prompt("🔒 請輸入戰情室密碼：");
+    if (userPass !== MY_PASSWORD) {
+        document.body.innerHTML = "<h1 style='color:#cf6679;text-align:center;margin-top:20%'>🚫 拒絕訪問：密碼錯誤</h1>";
+        throw new Error("密碼錯誤，停止執行"); // 這行會強制停止後面的程式連線資料庫
+    }
+    // === 🛡️ 簡易密碼鎖結束 ===
+
+    // ...下面接著原本的 firebaseConfig ...    
+// 2. 初始化 Firebase (這裡用的是全域變數 firebase，不是 import)
+    const firebaseConfig = {
+        apiKey: "AIzaSyC98g3JuqPtStZ4P25YZ8trqfWpUJss3vI",
+        authDomain: "financial-records-76092.firebaseapp.com",
+        projectId: "financial-records-76092",
+        storageBucket: "financial-records-76092.firebasestorage.app",
+        messagingSenderId: "327241339058",
+        appId: "1:327241339058:web:9192aecef5ccaf22ccb9ab",
+        measurementId: "G-S6Z26CCGJK"
+    };
+
+    // 初始化 App
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore(); // 取得資料庫實例
+    const COLLECTION_NAME = "finance_records"; 
+
+    let chart; 
+    document.getElementById('inputDate').valueAsDate = new Date();
+    document.getElementById('loading').style.display = 'block';
+
+    // 3. 監聽資料庫 (使用 compat 語法: db.collection)
+    db.collection(COLLECTION_NAME).orderBy("date", "asc")
+    .onSnapshot((querySnapshot) => {
+        const financeData = [];
+        querySnapshot.forEach((doc) => {
+            financeData.push({ id: doc.id, ...doc.data() });
+        });
+
+        document.getElementById('loading').style.display = 'none';
+        renderTable(financeData);
+        renderChart(financeData);
+        updateDashboard(financeData);
+    }, (error) => {
+        console.error("讀取失敗:", error);
+        alert("讀取失敗！請檢查 Firebase Console Rules 或按 F12 看詳細錯誤。");
+    });
+
+    // 4. 新增功能
+    document.getElementById('addBtn').addEventListener('click', function() {
+        const date = document.getElementById('inputDate').value;
+        const assets = Number(document.getElementById('inputAssets').value);
+        const liabilities = Number(document.getElementById('inputLiabilities').value);
+
+        if (!date) { alert("請選擇日期！"); return; }
+
+        const btn = document.getElementById('addBtn');
+        btn.disabled = true;
+        btn.innerText = "上傳中...";
+
+        // 寫入資料
+        db.collection(COLLECTION_NAME).add({
+            date: date,
+            assets: assets,
+            liabilities: liabilities,
+            netWorth: assets - liabilities,
+            timestamp: new Date()
+        }).then(() => {
+            console.log("寫入成功");
+            document.getElementById('inputAssets').value = '';
+            document.getElementById('inputLiabilities').value = '';
+        }).catch((error) => {
+            console.error("寫入錯誤: ", error);
+            alert("上傳失敗：" + error.message);
+        }).finally(() => {
+            btn.disabled = false;
+            btn.innerText = "上傳到雲端";
+        });
+    });
+
+    // 5. 刪除功能 (需掛載到 window 才能被 HTML onclick 呼叫)
+    window.deleteData = function(id) {
+        if(confirm('確定刪除？')) {
+            db.collection(COLLECTION_NAME).doc(id).delete().catch(error => {
+                console.error("刪除失敗:", error);
+                alert("刪除失敗");
+            });
+        }
+    };
+
+    // 渲染 UI
+    function updateDashboard(data) {
+        if (data.length === 0) return;
+        const latest = data[data.length - 1];
+        document.getElementById('displayAssets').innerText = `$${latest.assets.toLocaleString()}`;
+        document.getElementById('displayLiabilities').innerText = `$${latest.liabilities.toLocaleString()}`;
+        document.getElementById('displayNetWorth').innerText = `$${latest.netWorth.toLocaleString()}`;
+    }
+
+    function renderTable(data) {
+        const tbody = document.querySelector('#historyTable tbody');
+        tbody.innerHTML = '';
+        [...data].reverse().forEach(item => {
+            tbody.innerHTML += `<tr><td>${item.date}</td><td style="color:var(--positive)">$${item.assets.toLocaleString()}</td><td style="color:var(--negative)">$${item.liabilities.toLocaleString()}</td><td>$${item.netWorth.toLocaleString()}</td><td><button class="delete-btn" onclick="deleteData('${item.id}')">刪除</button></td></tr>`;
+        });
+    }
+
+    function renderChart(data) {
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        if (chart) chart.destroy();
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.date),
+                datasets: [
+                    { label: '淨資產', data: data.map(d => d.netWorth), borderColor: '#bb86fc', backgroundColor: 'rgba(187,134,252,0.1)', fill: true },
+                    { label: '總資產', data: data.map(d => d.assets), borderColor: '#03dac6', borderDash: [5,5] },
+                    { label: '總負債', data: data.map(d => d.liabilities), borderColor: '#cf6679', borderDash: [5,5] }
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { x: { grid: { color: '#333' } }, y: { grid: { color: '#333' } } } }
+        });
+    }
+</script>
+</body>
+</html>
