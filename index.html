@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jason的財務戰情室 V7.3</title>
+    <title>Jason的財務戰情室 V8.6 戰略版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
@@ -18,8 +18,7 @@
         :root {
             --bg-main: #090d16;
             --bg-card: #131a26;
-            --bg-input: #0f141f;
-            --border-color: rgba(255, 255, 255, 0.06);
+            --border-color: rgba(255, 255, 255, 0.08);
             --accent-purple: #a855f7;
             --accent-blue: #38bdf8;
             --accent-warning: #f59e0b;
@@ -35,196 +34,221 @@
             background-color: var(--bg-main);
             color: var(--text-main);
             font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 40px 20px;
+            padding: 30px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
 
-        .container { max-width: 1400px; width: 95%; }
+        .container { max-width: 1450px; width: 100%; }
 
-        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; width: 100%; }
-        h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text-main); }
-        h1 span { color: var(--accent-purple); }
-        .exchange-badge { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); padding: 10px 20px; border-radius: 20px; font-size: 0.95rem; color: var(--accent-blue); font-weight: 600; }
-        
-        .dashboard { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); transition: transform 0.2s; display: flex; flex-direction: column; justify-content: center; }
-        .card:hover { transform: translateY(-4px); }
-        .card h3 { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .card .amount { font-size: 1.6rem; font-weight: 700; font-family: 'Poppins', sans-serif; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .header-section { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+        h1 { font-size: 1.8rem; font-weight: 700; color: var(--text-main); }
+        .exchange-badge { background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.2); padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; color: var(--accent-blue); font-weight: 600; }
 
-        .input-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
-        .panel-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-        .panel-title { font-size: 1.1rem; font-weight: 600; color: var(--accent-purple); display: flex; align-items: center; gap: 8px; }
-        .load-last-btn { background: rgba(56, 189, 248, 0.1); border: 1px solid var(--accent-blue); color: var(--accent-blue); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; font-weight: 600;}
-        .load-last-btn:hover { background: var(--accent-blue); color: #fff; }
+        .dashboard { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px; margin-bottom: 30px; }
+        .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 20px; }
+        .card h3 { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; }
+        .card .amount { font-size: 1.5rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
 
-        .form-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .input-field label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 600; }
-        .input-field input { width: 100%; background: var(--bg-input); border: 1px solid rgba(255, 255, 255, 0.08); color: #fff; padding: 12px 15px; border-radius: 10px; font-size: 0.95rem; }
-        .input-field input:focus { outline: none; border-color: var(--accent-purple); }
-        .submit-btn { width: 100%; padding: 15px; background: linear-gradient(135deg, #a855f7, #7c3aed); color: #fff; border: none; border-radius: 10px; font-weight: 600; font-size: 1.05rem; cursor: pointer; transition: opacity 0.2s; letter-spacing: 1px; }
-        .submit-btn:hover { opacity: 0.9; }
+        .nav-tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; overflow-x: auto; }
+        .tab-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 10px 20px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+        .tab-btn:hover { color: var(--text-main); background: rgba(255,255,255,0.03); }
+        .tab-btn.active { background: rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.3); color: var(--accent-purple); }
 
-        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 30px; }
-        .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; display: flex; flex-direction: column; }
-        .chart-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 25px; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 25px; }
+        .chart-box { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; }
+        .chart-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         
         .donut-layout { display: flex; align-items: center; justify-content: space-between; flex-grow: 1; }
-        .donut-wrapper { position: relative; width: 190px; height: 190px; display: flex; align-items: center; justify-content: center; }
-        .donut-center { position: absolute; text-align: center; pointer-events: none; z-index: 5; }
-        .donut-center .label { font-size: 0.85rem; color: var(--text-muted); }
-        .donut-center .val { font-size: 1.6rem; font-weight: 700; color: var(--text-positive); font-family: 'Poppins', sans-serif; }
-        .custom-legend { flex: 1; margin-left: 25px; list-style: none; display: flex; flex-direction: column; gap: 10px; }
-        .legend-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: rgba(255, 255, 255, 0.02); border-radius: 10px; border: 1px solid transparent; }
-        .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }
-        .legend-name { font-size: 0.95rem; color: var(--text-main); }
-        .legend-pct { font-size: 0.95rem; font-weight: 700; font-family: 'Poppins', sans-serif; color: var(--accent-blue); }
+        .donut-wrapper { position: relative; width: 180px; height: 180px; display: flex; align-items: center; justify-content: center; }
+        .donut-center { position: absolute; text-align: center; pointer-events: none; }
+        .donut-center .val { font-size: 1.5rem; font-weight: 700; color: var(--text-positive); font-family: 'Poppins', sans-serif; }
+        .custom-legend { flex: 1; margin-left: 20px; list-style: none; display: flex; flex-direction: column; gap: 10px; }
+        .legend-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.02); border-radius: 8px; }
+        .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; display: inline-block; }
 
-        .milestone-section { margin-bottom: 30px; }
+        /* 🌟 V8.6 戰略模組雙卡片樣式 */
+        .bottom-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .strategy-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .panel-header h4 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .status-tag { font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
         
-        .current-level-banner { background: linear-gradient(145deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.02)); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 20px; position: relative; }
+        /* 能量條量表 */
+        .gauge-bar-bg { width: 100%; height: 12px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; display: flex; margin: 12px 0; }
+        .gauge-part { height: 100%; transition: width 0.8s ease; }
+        .stat-labels { display: flex; justify-content: space-between; font-size: 0.85rem; font-family: 'Poppins', sans-serif; }
+
+        .current-level-banner { background: linear-gradient(145deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.02)); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 16px; padding: 24px; text-align: center; margin-bottom: 20px; }
         .current-level-banner h4 { color: var(--accent-warning); font-size: 0.9rem; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 2px;}
         .current-level-banner .title { font-size: 2rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
         .current-level-banner .desc { font-size: 1rem; color: var(--text-muted); margin-bottom: 15px; }
-        
         .stage-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
-        .stage-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; position: relative; display: flex; flex-direction: column; }
+        .stage-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 22px; display: flex; flex-direction: column; }
         .stage-card.active { border: 1px solid var(--accent-blue); background: linear-gradient(180deg, rgba(56, 189, 248, 0.05) 0%, rgba(19, 26, 38, 0) 100%); }
         .stage-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-        .stage-name { font-weight: 700; font-size: 1.1rem; color: var(--text-main); }
-        .stage-target { font-size: 0.9rem; color: var(--text-muted); font-family: 'Poppins', sans-serif; }
-        
-        .progress-info { display: flex; justify-content: flex-end; font-size: 0.85rem; color: var(--accent-blue); margin-bottom: 8px; font-family: 'Poppins', sans-serif; font-weight: 600; }
+        .progress-info { display: flex; justify-content: flex-end; font-size: 0.85rem; margin-bottom: 8px; font-family: 'Poppins', sans-serif; font-weight: 600; }
         .progress-track { width: 100%; height: 8px; background: rgba(255,255,255,0.08); border-radius: 10px; overflow: hidden; margin-bottom: 15px; }
-        .progress-fill { height: 100%; border-radius: 10px; transition: width 0.8s ease-out; }
-        
-        .strategy-list { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; list-style: none; flex-grow: 1; }
+        .progress-fill { height: 100%; transition: width 0.8s; }
+        .strategy-list { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; list-style: none; }
         .strategy-list li { margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; }
-        .strategy-list li i { margin-top: 4px; font-size: 0.7rem; }
-        .strategy-list strong { color: #e2e8f0; }
 
-        .monthly-section { margin-bottom: 30px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px; }
         .year-selector-container { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; }
-        .year-selector-title { font-size: 0.9rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 6px; }
-        .radio-group { display: flex; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem; color: var(--text-muted); transition: color 0.2s; }
-        .radio-label:hover { color: var(--text-main); }
-        .radio-label input[type="radio"] { appearance: none; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--text-muted); outline: none; background: transparent; cursor: pointer; transition: 0.2s; margin: 0; }
+        .radio-label { display: flex; align-items: center; gap: 6px; cursor: pointer; font-size: 0.9rem; color: var(--text-muted); }
+        .radio-label input[type="radio"] { appearance: none; width: 14px; height: 14px; border-radius: 50%; border: 2px solid var(--text-muted); outline: none; }
         .radio-label input[type="radio"]:checked { background: #ef4444; border: 3px solid var(--bg-card); box-shadow: 0 0 0 1px #ef4444; }
         .radio-label input[type="radio"]:checked + span { color: var(--text-main); font-weight: 600; }
-
-        .monthly-summary-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 15px; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
         .monthly-summary-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
         .monthly-card { background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 15px; text-align: center; }
-        .monthly-card h4 { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; font-weight: 500; }
+        .monthly-card h4 { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
         .monthly-card .val { font-size: 1.3rem; font-weight: 700; font-family: 'Poppins', sans-serif; }
         
-        .monthly-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .monthly-table th { background: rgba(255, 255, 255, 0.03); color: var(--text-muted); padding: 14px; text-align: left; font-weight: 600; border-bottom: 1px solid var(--border-color); }
-        .monthly-table td { padding: 14px; border-bottom: 1px solid rgba(255, 255, 255, 0.02); }
-
-        .toggle-section { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; overflow: hidden; margin-bottom: 40px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); }
-        .toggle-header { padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: transparent; transition: background 0.2s; }
-        .toggle-header:hover { background: rgba(255, 255, 255, 0.02); }
-        .toggle-title { font-size: 1.05rem; font-weight: 600; color: var(--text-main); display: flex; align-items: center; gap: 10px; }
-        .toggle-icon { color: var(--text-muted); transition: transform 0.3s ease; }
-        
-        .toggle-content { display: none; border-top: 1px solid var(--border-color); }
-        .toggle-content.show { display: block; }
-        .toggle-header.active .toggle-icon { transform: rotate(180deg); }
-        
-        .header-actions { display: flex; align-items: center; gap: 15px; }
-        .export-csv-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 6px 12px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+        .header-actions { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; justify-content: flex-end;}
+        .export-csv-btn { background: transparent; border: 1px solid var(--text-muted); color: var(--text-muted); padding: 8px 15px; border-radius: 8px; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
         .export-csv-btn:hover { border-color: var(--text-main); color: var(--text-main); }
-
+        
         .history-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
-        .history-table th { background: rgba(255, 255, 255, 0.02); color: var(--text-muted); font-weight: 600; font-size: 0.85rem; text-transform: uppercase; padding: 18px 20px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        .history-table td { padding: 18px 20px; text-align: left; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: #cbd5e1; }
+        .history-table th { background: rgba(255, 255, 255, 0.02); color: var(--text-muted); padding: 18px 20px; text-align: left; border-bottom: 1px solid var(--border-color); white-space: nowrap; }
+        .history-table td { padding: 18px 20px; border-bottom: 1px solid rgba(255, 255, 255, 0.03); color: #cbd5e1; white-space: nowrap; }
         .delete-icon-btn { background: none; border: none; color: var(--text-negative); cursor: pointer; font-size: 1.1rem; transition: transform 0.2s; }
-        .delete-icon-btn:hover { transform: scale(1.1); }
         
         .loader { border: 4px solid #1e293b; border-top: 4px solid var(--accent-purple); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 1024px) { .charts-grid { grid-template-columns: 1fr; } .monthly-summary-grid { grid-template-columns: repeat(2, 1fr); } .stage-grid { grid-template-columns: repeat(2, 1fr); } .form-grid { grid-template-columns: repeat(3, 1fr); } .dashboard { grid-template-columns: repeat(3, 1fr); } }
-        @media (max-width: 640px) { .dashboard { grid-template-columns: repeat(2, 1fr); } .stage-grid, .form-grid { grid-template-columns: 1fr; } }
+        @media (max-width: 1024px) { .charts-grid, .bottom-widgets { grid-template-columns: 1fr; } .dashboard { grid-template-columns: repeat(3, 1fr); } .stage-grid, .monthly-summary-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 640px) { .dashboard { grid-template-columns: repeat(2, 1fr); } .stage-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="container">
+
     <div class="header-section">
-        <h1>Jason的財務紀錄表</h1>
-        <div class="exchange-badge"><i class="fa-solid fa-globe"></i> USD/TWD: <span id="currentRate">32.50</span></div>
+        <h1>Jason的財務戰情室 🚀</h1>
+        <div class="exchange-badge"><i class="fa-solid fa-globe"></i> USD/TWD: <span id="currentRate">載入中...</span></div>
     </div>
     
     <div class="dashboard">
-        <div class="card" style="border-top: 4px solid var(--text-positive);">
-            <h3><i class="fa-solid fa-vault" style="color:var(--text-positive)"></i> 總資產</h3>
-            <div class="amount" id="displayAssets" style="color: var(--text-positive)">$0</div>
+        <div class="card" style="border-top: 3px solid var(--text-positive);">
+            <h3><i class="fa-solid fa-vault" style="color:var(--text-positive)"></i> 總資產 </h3><div class="amount" id="displayAssets" style="color: var(--text-positive)">$0</div>
         </div>
-        <div class="card" style="border-top: 4px solid var(--text-negative);">
-            <h3><i class="fa-solid fa-credit-card" style="color:var(--text-negative)"></i> 總負債</h3>
-            <div class="amount" id="displayLiabilities" style="color: var(--text-negative)">$0</div>
+        <div class="card" style="border-top: 3px solid var(--text-negative);">
+            <h3><i class="fa-solid fa-credit-card" style="color:var(--text-negative)"></i> 總負債 </h3><div class="amount" id="displayLiabilities" style="color: var(--text-negative)">$0</div>
         </div>
-        <div class="card" style="border-top: 4px solid var(--accent-purple);">
-            <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent-purple)"></i> 總淨資產</h3>
-            <div class="amount" id="displayNetWorth" style="color: #fff">$0</div>
+        <div class="card" style="border-top: 3px solid var(--accent-purple);">
+            <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent-purple)"></i> 總淨資產 </h3><div class="amount" id="displayNetWorth" style="color: #fff">$0</div>
         </div>
-        <div class="card" style="border-top: 4px solid var(--accent-blue);">
-            <h3><i class="fa-solid fa-bolt"></i> 今日淨值波動</h3>
-            <div class="amount" id="displayDailyChange">$0</div>
+        <div class="card" style="border-top: 3px solid var(--accent-blue);">
+            <h3><i class="fa-solid fa-bolt"></i> 今日淨值波動</h3><div class="amount" id="displayDailyChange">$0</div>
         </div>
-        <div class="card" style="border-top: 4px solid #f59e0b;">
-            <h3><i class="fa-solid fa-chart-simple"></i> 資產日成長率</h3>
-            <div class="amount" id="displayDailyGrowth">0%</div>
+        <div class="card" style="border-top: 3px solid #f59e0b;">
+            <h3><i class="fa-solid fa-chart-simple"></i> 資產日成長率</h3><div class="amount" id="displayDailyGrowth">0%</div>
         </div>
     </div>
 
-    <div class="input-panel">
-        <div class="panel-title-row">
-            <div class="panel-title"><i class="fa-solid fa-pen-to-square"></i> 當日紀錄</div>
-            <button class="load-last-btn" id="loadLastBtn" title="帶入上次各項資產數字，只需修改有變動的即可">
-                <i class="fa-solid fa-clock-rotate-left"></i> 載入上次數字
-            </button>
-        </div>
-        <div class="form-grid">
-            <div class="input-field"><label>日期</label><input type="date" id="inputDate"></div>
-            <div class="input-field"><label>台股 (TWD)</label><input type="number" id="inputTwStock" placeholder="0"></div>
-            <div class="input-field"><label>美股 (USD)</label><input type="number" id="inputUsStockUsd" placeholder="0"></div>
-            <div class="input-field"><label>Crypto (USD)</label><input type="number" id="inputCryptoUsd" placeholder="0"></div>
-            <div class="input-field"><label>現金存款 (TWD)</label><input type="number" id="inputCash" placeholder="0"></div>
-            <div class="input-field"><label>總負債 (TWD)</label><input type="number" id="inputLiabilities" placeholder="0"></div>
-        </div>
-        <button class="submit-btn" id="addBtn"><i class="fa-solid fa-cloud-arrow-up"></i> 同步</button>
-    </div>
-    
     <div id="loading" class="loader"></div>
 
-    <div class="charts-grid">
-        <div class="chart-box">
-            <div class="chart-title"><i class="fa-solid fa-chart-line" style="color:var(--accent-blue)"></i> 資產歷史走勢</div>
-            <div style="flex-grow: 1; min-height: 280px;"><canvas id="financeChart"></canvas></div>
+    <div class="nav-tabs">
+        <button class="tab-btn active" onclick="switchTab('overview')"><i class="fa-solid fa-house"></i> 總體大盤局</button>
+        <button class="tab-btn" onclick="switchTab('monthly')"><i class="fa-solid fa-calendar-days"></i> 月度損益報表</button>
+        <button class="tab-btn" onclick="switchTab('milestones')"><i class="fa-solid fa-trophy"></i> 資產里程碑</button>
+        <button class="tab-btn" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> 詳細快照明細</button>
+        <button class="tab-btn" onclick="switchTab('inventory')"><i class="fa-solid fa-layer-group"></i> 台美股庫存明細</button>
+    </div>
+
+    <div id="tab-overview" class="tab-content active">
+        <div class="charts-grid">
+            <div class="chart-box">
+                <div class="chart-title"><i class="fa-solid fa-chart-line" style="color:var(--accent-blue)"></i> 資產歷史走勢</div>
+                <div style="flex-grow: 1; min-height: 280px;"><canvas id="financeChart"></canvas></div>
+            </div>
+            <div class="chart-box">
+                <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color:var(--text-positive)"></i> 資產類別佔比</div>
+                <div class="donut-layout">
+                    <div class="donut-wrapper">
+                        <canvas id="donutChart"></canvas>
+                        <div class="donut-center"><div class="label">Total</div><div class="val" id="donutTotalText">0W</div></div>
+                    </div>
+                    <ul class="custom-legend" id="donutLegend"></ul>
+                </div>
+            </div>
         </div>
-        <div class="chart-box">
-            <div class="chart-title"><i class="fa-solid fa-chart-pie" style="color:var(--text-positive)"></i> 資產類別佔比</div>
-            <div class="donut-layout">
-                <div class="donut-wrapper">
-                    <canvas id="donutChart"></canvas>
-                    <div class="donut-center">
-                        <div class="label">Total</div>
-                        <div class="val" id="donutTotalText">0W</div>
+
+        <div class="bottom-widgets">
+            
+            <div class="strategy-panel" style="border-left: 4px solid var(--accent-warning);">
+                <div>
+                    <div class="panel-header">
+                        <h4 style="color:var(--accent-warning);"><i class="fa-solid fa-plane-departure"></i> 關西遠征戰略監控</h4>
+                        <span class="status-tag" id="tripStatusTag" style="background:rgba(245,158,11,0.15); color:var(--accent-warning);">計算中...</span>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">大阪·京都·奈良七日行，子彈存量防禦指標：</p>
+                    <div style="display:flex; justify-content:space-between; align-items:baseline;">
+                        <span style="font-size:0.85rem; color:#cbd5e1;">當前實體現金預備金：</span>
+                        <span style="font-size:1.4rem; font-weight:700; font-family:'Poppins', sans-serif; color:var(--text-positive);" id="tripCashDisplay">$0</span>
                     </div>
                 </div>
-                <ul class="custom-legend" id="donutLegend"></ul>
+                <div style="margin-top:15px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted);">
+                    <span>📌 行程：06/22 - 06/28</span>
+                    <span id="tripCountdownText">倒數結算中</span>
+                </div>
+            </div>
+
+            <div class="strategy-panel" style="border-left: 4px solid var(--accent-blue);">
+                <div>
+                    <div class="panel-header">
+                        <h4 style="color:var(--accent-blue);"><i class="fa-solid fa-scale-unbalanced"></i> 科技純度與攻防配置比</h4>
+                        <span class="status-tag" style="background:rgba(56,189,248,0.15); color:var(--accent-blue);">高波陣型</span>
+                    </div>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:6px;">矽谷尖刀部位 (進攻) vs 實體存款 (防禦) 能量條：</p>
+                    
+                    <div class="gauge-bar-bg">
+                        <div class="gauge-part" id="gaugeAttack" style="width:50%; background:linear-gradient(90deg, #38bdf8, #a855f7);"></div>
+                        <div class="gauge-part" id="gaugeDefense" style="width:50%; background:#64748b;"></div>
+                    </div>
+                    
+                    <div class="stat-labels">
+                        <span style="color:var(--accent-blue); font-weight:600;"><i class="fa-solid fa-swords"></i> 進攻部位: <span id="pctAttackText">0%</span></span>
+                        <span style="color:#94a3b8;"><i class="fa-solid fa-shield"></i> 現金裝甲: <span id="pctDefenseText">0%</span></span>
+                    </div>
+                </div>
+                <div style="margin-top:15px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05); font-size:0.8rem; color:var(--text-muted); text-align:right;">
+                    <span>⚡ 建議策略：保持科技成長股核心，穩健扛波</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="tab-monthly" class="tab-content">
+        <div class="chart-box">
+            <div class="year-selector-container">
+                <div style="font-size: 0.9rem; font-weight: 600;"><i class="fa-solid fa-calendar-week"></i> 選擇年份</div>
+                <div class="radio-group" id="yearSelectorGroup" style="display:flex; gap:15px;"></div>
+            </div>
+            <div class="monthly-summary-grid">
+                <div class="monthly-card"><h4>🏅 累計淨值變化</h4><div class="val" id="msTotalNetChange">$0</div></div>
+                <div class="monthly-card"><h4>📈 累計資產變化</h4><div class="val" id="msTotalAssetChange">$0</div></div>
+                <div class="monthly-card"><h4>🏆 最佳單月</h4><div class="val" id="msBestMonth" style="color: var(--text-positive)">-</div></div>
+                <div class="monthly-card"><h4>📉 最差單月</h4><div class="val" id="msWorstMonth" style="color: var(--text-negative)">-</div></div>
+            </div>
+            <div style="height: 300px; margin-bottom: 25px;"><canvas id="monthlyChart"></canvas></div>
+            <div style="overflow-x: auto;">
+                <table class="history-table" id="monthlyTable">
+                    <thead><tr><th>月份</th><th>月底日期</th><th>月底總資產</th><th>月底淨資產</th><th>當月資產變化</th><th>月成長率</th></tr></thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="milestone-section">
-        <div class="panel-title" style="margin-bottom: 25px;"><i class="fa-solid fa-trophy" style="color:var(--accent-warning)"></i> 資產里程碑</div>
+    <div id="tab-milestones" class="tab-content">
         <div class="current-level-banner">
             <h4>目前等級</h4>
             <div class="title" id="msCurrentTitle">載入中...</div>
@@ -234,59 +258,33 @@
         <div class="stage-grid" id="stageGrid"></div>
     </div>
 
-    <div class="monthly-section">
-        <div class="panel-title" style="margin-bottom: 25px;"><i class="fa-solid fa-calendar-days" style="color:var(--text-positive)"></i> 月度損益報表</div>
-        
-        <div class="year-selector-container">
-            <div class="year-selector-title"><i class="fa-solid fa-calendar-week"></i> 選擇年份</div>
-            <div class="radio-group" id="yearSelectorGroup"></div>
-        </div>
-
-        <div class="monthly-summary-title" id="dynamicMonthlyTitle">年度總結</div>
-        <div class="monthly-summary-grid">
-            <div class="monthly-card"><h4>🏅 累計淨值變化</h4><div class="val" id="msTotalNetChange">$0</div></div>
-            <div class="monthly-card"><h4>📈 累計資產變化</h4><div class="val" id="msTotalAssetChange">$0</div></div>
-            <div class="monthly-card"><h4>🏆 最佳單月</h4><div class="val" id="msBestMonth" style="color: var(--text-positive)">-</div></div>
-            <div class="monthly-card"><h4>📉 最差單月</h4><div class="val" id="msWorstMonth" style="color: var(--text-negative)">-</div></div>
-        </div>
-
-        <div style="height: 300px; margin-bottom: 25px;"><canvas id="monthlyChart"></canvas></div>
-
-        <div class="toggle-section" style="margin-bottom: 0; box-shadow: none; border: 1px solid rgba(255,255,255,0.05); background: rgba(0,0,0,0.15); border-radius: 12px;">
-            <div class="toggle-header" id="monthlyToggleBtn">
-                <div class="toggle-title"><i class="fa-solid fa-list-ul" style="color:var(--text-muted)"></i> 月度明細資料</div>
-                <i class="fa-solid fa-chevron-down toggle-icon"></i>
+    <div id="tab-history" class="tab-content">
+        <div class="chart-box">
+            <div class="header-actions">
+                <button class="export-csv-btn" id="exportCsvBtn"><i class="fa-solid fa-download"></i> 匯出 CSV</button>
             </div>
-            <div class="toggle-content" id="monthlyContent">
-                <div style="overflow-x: auto; padding: 0 5px 10px 5px;">
-                    <table class="monthly-table" id="monthlyTable">
-                        <thead>
-                            <tr><th>月份</th><th>月底日期</th><th>月底總資產</th><th>月底淨資產</th><th>當月資產變化</th><th>月成長率</th></tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
-                </div>
+            <div style="overflow-x: auto;">
+                <table class="history-table" id="historyTable">
+                    <thead><tr><th>日期</th><th>紀錄時間</th><th>台股</th><th>美股 (TWD)</th><th>Crypto (TWD)</th><th>現金</th><th>總負債</th><th>總資產</th><th>淨資產</th><th>操作</th></tr></thead>
+                    <tbody></tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="toggle-section">
-        <div class="toggle-header" id="historyToggleBtn">
-            <div class="toggle-title"><i class="fa-solid fa-clock-rotate-left" style="color:var(--text-muted)"></i> 詳細歷史快照紀錄</div>
-            <div class="header-actions">
-                <button class="export-csv-btn" id="exportCsvBtn" title="將所有歷史紀錄下載為 Excel 相容格式"><i class="fa-solid fa-download"></i> 匯出 CSV</button>
-                <i class="fa-solid fa-chevron-down toggle-icon"></i>
-            </div>
-        </div>
-        <div class="toggle-content" id="historyContent">
+    <div id="tab-inventory" class="tab-content">
+        <div class="chart-box">
+            <div class="chart-title"><i class="fa-solid fa-server" style="color:var(--accent-purple)"></i> 即時持股明細庫存 <span style="font-size:0.8rem; color:var(--text-muted); font-weight:400;">(即時同步自 Google Sheets API)</span></div>
             <div style="overflow-x: auto;">
-                <table class="history-table" id="historyTable">
+                <table class="history-table" id="inventoryTable">
                     <thead>
                         <tr>
-                            <th>日期</th><th>台股</th><th>美股 (TWD)</th><th>Crypto (TWD)</th><th>現金</th><th>總負債</th><th>總資產</th><th>淨資產</th><th>操作</th>
+                            <th>標的代號</th><th>資產類別</th><th>持有股數</th><th>平均成本</th><th>最新市價</th><th>總市值</th><th>帳面損益</th>
                         </tr>
                     </thead>
-                    <tbody></tbody>
+                    <tbody>
+                        <tr><td colspan="7" style="text-align:center; padding:30px;"><div class="loader" style="display:inline-block; margin-right:10px;"></div> 等待載入中...</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -294,362 +292,203 @@
 </div>
 
 <script>
+const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzk4LUCX9t7AxHmXEX-6a2PlQ8cjp_DhJMxTbqGbGehDEzdByk94_Nw5H_i6U_O4nUT/exec";
+
+function switchTab(tabId) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    document.getElementById('tab-' + tabId).classList.add('active');
+    
+    const targetBtn = document.querySelector(`button[onclick*="${tabId}"]`);
+    if(targetBtn) targetBtn.classList.add('active');
+    
+    if(tabId === 'inventory') loadInventoryData();
+}
+
+async function loadInventoryData() {
+    const tbody = document.querySelector('#inventoryTable tbody');
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--accent-blue);"><i class="fa-solid fa-circle-notch fa-spin"></i> 正在與 Google 雲端伺服器建立連線，讀取最新報價...</td></tr>';
+    try {
+        const response = await fetch(GAS_API_URL);
+        if (!response.ok) throw new Error("網路異常");
+        const data = await response.json();
+        tbody.innerHTML = '';
+        if(data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">目前沒有庫存資料</td></tr>'; return; }
+        data.forEach(item => {
+            let pVal = parseFloat(item.profit)||0, vVal = parseFloat(item.totalValue)||0, prVal = parseFloat(item.price)||0, cVal = parseFloat(item.cost)||0;
+            let pColor = pVal >= 0 ? 'var(--text-positive)' : 'var(--text-negative)', pSign = pVal >= 0 ? '+' : '';
+            let bg = 'rgba(255,255,255,0.1)';
+            if(item.category === '台股') bg = 'rgba(16, 185, 129, 0.2)';
+            if(item.category === '美股') bg = 'rgba(56, 189, 248, 0.2)';
+            if(item.category === 'Crypto') bg = 'rgba(245, 158, 11, 0.2)';
+            tbody.innerHTML += `<tr><td style="font-weight:700; color:#fff;">${item.ticker}</td><td><span style="background:${bg}; padding:4px 10px; border-radius:6px; font-size:0.8rem;">${item.category}</span></td><td style="font-family:'Poppins', sans-serif;">${item.shares}</td><td style="font-family:'Poppins', sans-serif;">$${cVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td style="font-family:'Poppins', sans-serif; color:var(--accent-blue);">$${prVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td style="font-family:'Poppins', sans-serif;">$${vVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td><td style="font-family:'Poppins', sans-serif; font-weight:700; color:${pColor};">${pSign}$${pVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>`;
+        });
+    } catch (error) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-negative); padding:30px;"><i class="fa-solid fa-triangle-exclamation"></i> 讀取失敗！這通常是因為 GAS 部署權限設定錯誤。請至後台確認「誰可以存取」設為所有人。</td></tr>'; }
+}
+
 (async function() { 
-    // 密碼鎖
     const MY_PASSWORD_HASH = "a76631241a4ad4528be06e6f6112b7211a00cefac243a6e46e6dab61f592e861"; 
     async function sha256(message) {
         const msgBuffer = new TextEncoder().encode(message);
         const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-        const hashArray = Array.from(new Uint8Array(hashBuffer));
-        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
     }
-    let userPass = prompt("🔒 請輸入戰情室密碼：");
-    if (await sha256(userPass || "") !== MY_PASSWORD_HASH) {
-        document.body.innerHTML = "<h1 style='color:#ff7597;text-align:center;margin-top:20%'>🚫 密碼錯誤，拒絕訪問</h1>";
-        throw new Error("密碼錯誤"); 
+    if (await sha256(prompt("🔒 請輸入戰情室密碼：") || "") !== MY_PASSWORD_HASH) {
+        document.body.innerHTML = "<h1 style='color:#ff7597;text-align:center;margin-top:20%'>🚫 密碼錯誤，拒絕訪問</h1>"; throw new Error("密碼錯誤"); 
     }
 
-    // Firebase
-    const firebaseConfig = {
-        apiKey: "AIzaSyC98g3JuqPtStZ4P25YZ8trqfWpUJss3vI",
-        authDomain: "financial-records-76092.firebaseapp.com",
-        projectId: "financial-records-76092",
-        storageBucket: "financial-records-76092.firebasestorage.app",
-        messagingSenderId: "327241339058",
-        appId: "1:327241339058:web:9192aecef5ccaf22ccb9ab"
-    };
+    fetch('https://open.er-api.com/v6/latest/USD').then(r => r.json()).then(d => document.getElementById('currentRate').innerText = d.rates.TWD.toFixed(2)).catch(() => document.getElementById('currentRate').innerText = "32.50 (預設)");
+
+    const firebaseConfig = { apiKey: "AIzaSyC98g3JuqPtStZ4P25YZ8trqfWpUJss3vI", authDomain: "financial-records-76092.firebaseapp.com", projectId: "financial-records-76092" };
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore(); 
     const COLLECTION_NAME = "finance_records"; 
 
-    let lineChart, donutChart, monthlyChartObj;
-    document.getElementById('inputDate').valueAsDate = new Date();
+    let lineChart, donutChart, monthlyChartObj, globalFinanceData = [], currentSelectedYear = 'all';
     document.getElementById('loading').style.display = 'block';
-
-    let globalFinanceData = [];
-    let currentSelectedYear = 'all';
-    let usdToTwdRate = 32.5; 
-
-    document.getElementById('historyToggleBtn').addEventListener('click', function(e) {
-        if(e.target.closest('#exportCsvBtn')) return;
-        this.classList.toggle('active');
-        document.getElementById('historyContent').classList.toggle('show');
-    });
-
-    document.getElementById('monthlyToggleBtn').addEventListener('click', function() {
-        this.classList.toggle('active');
-        document.getElementById('monthlyContent').classList.toggle('show');
-    });
 
     document.getElementById('exportCsvBtn').addEventListener('click', function() {
         if (globalFinanceData.length === 0) return alert('目前沒有資料可以匯出！');
-        
-        let csvContent = "\uFEFF"; 
-        csvContent += "日期,台股(TWD),美股(TWD),Crypto(TWD),現金存款(TWD),總負債(TWD),總資產(TWD),總淨資產(TWD)\n";
-        
+        let csvContent = "\uFEFF日期,紀錄時間,台股(TWD),美股(TWD),Crypto(TWD),現金存款(TWD),總負債(TWD),總資產(TWD),總淨資產(TWD)\n";
         globalFinanceData.forEach(d => {
-            csvContent += `${d.date},${d.twStock||0},${d.usStock||0},${d.crypto||0},${d.cash||0},${d.liabilities||0},${d.assets||0},${d.netWorth||0}\n`;
+            let timeStr = d.timestamp ? (typeof d.timestamp.toDate === 'function' ? d.timestamp.toDate().toLocaleTimeString('zh-TW',{hour12:false}) : new Date(d.timestamp).toLocaleTimeString('zh-TW',{hour12:false})) : "-";
+            csvContent += `${d.date},${timeStr},${d.twStock||0},${d.usStock||0},${d.crypto||0},${d.cash||0},${d.liabilities||0},${d.assets||0},${d.netWorth||0}\n`;
         });
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement("a");
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", `財務戰情室_備份_${new Date().toISOString().slice(0, 10)}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csvContent], {type:'text/csv;charset=utf-8;'})); link.download = `財務戰情室_備份_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link);
     });
-
-    // 🌟 移除 Alert，改用按鈕本身的文字閃爍回饋
-    document.getElementById('loadLastBtn').addEventListener('click', function() {
-        if (globalFinanceData.length === 0) return alert('目前雲端沒有歷史資料可供載入！');
-        const lastRecord = globalFinanceData[globalFinanceData.length - 1];
-        
-        document.getElementById('inputTwStock').value = lastRecord.twStock || 0;
-        document.getElementById('inputUsStockUsd').value = Math.round((lastRecord.usStock || 0) / usdToTwdRate);
-        document.getElementById('inputCryptoUsd').value = Math.round((lastRecord.crypto || 0) / usdToTwdRate);
-        document.getElementById('inputCash').value = lastRecord.cash || 0;
-        document.getElementById('inputLiabilities').value = lastRecord.liabilities || 0;
-        
-        const btn = this;
-        const originalText = btn.innerHTML;
-        btn.innerHTML = '<i class="fa-solid fa-check"></i> 已載入';
-        btn.style.color = 'var(--text-positive)';
-        btn.style.borderColor = 'var(--text-positive)';
-        
-        setTimeout(() => {
-            btn.innerHTML = originalText;
-            btn.style.color = '';
-            btn.style.borderColor = '';
-        }, 1500);
-    });
-
-    fetch('https://open.er-api.com/v6/latest/USD')
-        .then(res => res.json()).then(data => {
-            usdToTwdRate = data.rates.TWD;
-            document.getElementById('currentRate').innerText = usdToTwdRate.toFixed(2);
-        }).catch(() => document.getElementById('currentRate').innerText = "32.50 (預設)");
 
     const milestones = [
-        { name: "第一階段", title: "破敵先鋒 (現階段)", target: 500000, color: "#10b981", desc: "已達成半桶金！集中火力於科技與AI供應鏈，承受高波動換取高成長。保留實體現金防禦日本遠征與兵役空窗期。", strategy: [ "<strong>台股純科 (0050/00881):</strong> 70%", "<strong>美股尖刀 (QQQ/NVDA):</strong> 200%", "<strong>實體現金:</strong> 10%" ] },
-        { name: "第二階段", title: "百萬指揮官", target: 1000000, color: "#38bdf8", desc: "踏破百萬大關！接軌職場正職現金流，維持高純度科技陣型，並切出小資金狙擊高波動次產業。", strategy: [ "<strong>美股尖刀 (QQQ/NVDA):</strong> 45%", "<strong>台股大盤 (0050/00881):</strong> 35%", "<strong>游擊部隊 (個股):</strong> 10%", "<strong>實體現金:</strong> 10%" ] },
-        { name: "第三階段", title: "資本擴張將軍", target: 3000000, color: "#f59e0b", desc: "資產量體放大，稍微增厚裝甲防禦。以美股科技大盤為絕對核心，讓矽谷巨頭與AI幫你打工。", strategy: [ "<strong>美股大盤/科技 (QQQ/VOO):</strong> 50%", "<strong>台股大盤/科技:</strong> 30%", "<strong>游擊部隊 (Crypto等):</strong> 10%", "<strong>現金/避震器:</strong> 10%" ] },
-        { name: "第四階段", title: "財富雪球霸主", target: 5000000, color: "#ff7597", desc: "五百萬絕對領域！具備強大財務底氣，追求長期穩健資本利得與科技股配息現金流，邁向財務自由。", strategy: [ "<strong>美股大盤/科技:</strong> 50%", "<strong>台股大盤/科技:</strong> 35%", "<strong>加密貨幣/高波資產:</strong> 5%", "<strong>戰略備用金:</strong> 10%" ] }
+        { name: "第一階段", title: "破敵先鋒 (現階段)", target: 500000, color: "#10b981", desc: "已達成半桶金！集中火力於科技與AI供應鏈，承受高波動換取高成長。", strategy: [ "<strong>台股純科:</strong> 70%", "<strong>美股尖刀:</strong> 20%", "<strong>實體現金:</strong> 10%" ] },
+        { name: "第二階段", title: "百萬指揮官", target: 1000000, color: "#38bdf8", desc: "踏破百萬大關！接軌職場正職現金流，維持高純度科技陣型。", strategy: [ "<strong>美股尖刀:</strong> 45%", "<strong>台股大盤:</strong> 35%", "<strong>游擊部隊:</strong> 10%" ] },
+        { name: "第三階段", title: "資本擴張將軍", target: 3000000, color: "#f59e0b", desc: "資產量體放大，稍微增厚裝甲防禦。以美股大盤為絕對核心。", strategy: [ "<strong>美股大盤:</strong> 50%", "<strong>台股大盤:</strong> 30%", "<strong>現金避震:</strong> 10%" ] },
+        { name: "第四階段", title: "財富雪球霸主", target: 5000000, color: "#ff7597", desc: "五百萬絕對領域！具備強大財務底氣，追求長期穩健資本利得。", strategy: [ "<strong>美股大盤:</strong> 50%", "<strong>台股大盤:</strong> 35%", "<strong>戰略備用金:</strong> 10%" ] }
     ];
 
-    db.collection(COLLECTION_NAME).orderBy("date", "asc")
-    .onSnapshot((querySnapshot) => {
-        globalFinanceData = [];
-        querySnapshot.forEach((doc) => globalFinanceData.push({ id: doc.id, ...doc.data() }));
+    db.collection(COLLECTION_NAME).orderBy("date", "asc").onSnapshot((querySnapshot) => {
+        globalFinanceData = []; querySnapshot.forEach((doc) => globalFinanceData.push({ id: doc.id, ...doc.data() }));
         document.getElementById('loading').style.display = 'none';
-        
-        renderTable(globalFinanceData);
-        renderLineChart(globalFinanceData);
-        renderDonutChart(globalFinanceData);
-        updateDashboard(globalFinanceData);
-        renderMilestones(globalFinanceData); 
-        renderMonthlyReport();
-    });
-
-    document.getElementById('addBtn').addEventListener('click', function() {
-        const date = document.getElementById('inputDate').value;
-        const twStock = Number(document.getElementById('inputTwStock').value) || 0;
-        const usStockTwd = Math.round((Number(document.getElementById('inputUsStockUsd').value) || 0) * usdToTwdRate);
-        const cryptoTwd = Math.round((Number(document.getElementById('inputCryptoUsd').value) || 0) * usdToTwdRate);
-        const cash = Number(document.getElementById('inputCash').value) || 0;
-        const liabilities = Number(document.getElementById('inputLiabilities').value) || 0;
-        const totalAssets = twStock + usStockTwd + cryptoTwd + cash;
-        const netWorth = totalAssets - liabilities;
-
-        if (!date) return alert("請選擇日期！");
-        const btn = document.getElementById('addBtn');
-        btn.disabled = true; btn.innerText = "雲端同步中...";
-
-        db.collection(COLLECTION_NAME).add({
-            date, twStock, usStock: usStockTwd, crypto: cryptoTwd, cash,
-            assets: totalAssets, liabilities, netWorth, timestamp: new Date()
-        }).then(() => {
-            ['inputTwStock', 'inputUsStockUsd', 'inputCryptoUsd', 'inputCash', 'inputLiabilities'].forEach(id => document.getElementById(id).value = '');
-        }).finally(() => { btn.disabled = false; btn.innerText = "同步"; });
+        updateDashboard(globalFinanceData); renderLineChart(globalFinanceData); renderDonutChart(globalFinanceData); renderTable(globalFinanceData); renderMilestones(globalFinanceData); renderMonthlyReport();
+        updateStrategyCards(globalFinanceData); // 🌟 驅動底部戰略雙卡片計算
     });
 
     window.deleteData = function(id) { if(confirm('確定刪除此筆快照？')) db.collection(COLLECTION_NAME).doc(id).delete(); };
 
-    function renderMonthlyReport() {
-        const data = globalFinanceData;
-        if (!data || data.length === 0) return;
+    // 🌟 V8.6 計算底部硬核雙卡片邏輯
+    function updateStrategyCards(data) {
+        if(data.length === 0) return;
+        const latest = data[data.length - 1];
         
-        const monthlyMap = {};
-        data.forEach(item => {
-            const monthStr = item.date.substring(0, 7);
-            monthlyMap[monthStr] = item; 
-        });
-        const months = Object.keys(monthlyMap).sort();
+        // 1. 左卡：行程倒數與現金顯示
+        const cash = latest.cash || 0;
+        document.getElementById('tripCashDisplay').innerText = `$${cash.toLocaleString()}`;
         
-        const availableYears = [...new Set(months.map(m => m.substring(0, 4)))].sort((a,b) => b-a);
-        
-        const radioGroup = document.getElementById('yearSelectorGroup');
-        let radioHtml = `<label class="radio-label"><input type="radio" name="yearFilter" value="all" ${currentSelectedYear === 'all' ? 'checked' : ''}><span>全部</span></label>`;
-        availableYears.forEach(y => {
-            radioHtml += `<label class="radio-label"><input type="radio" name="yearFilter" value="${y}" ${currentSelectedYear === y ? 'checked' : ''}><span>${y}</span></label>`;
-        });
-        
-        if (radioGroup.innerHTML.trim() !== radioHtml.trim()) {
-            radioGroup.innerHTML = radioHtml;
-            document.querySelectorAll('input[name="yearFilter"]').forEach(radio => {
-                radio.addEventListener('change', (e) => {
-                    currentSelectedYear = e.target.value;
-                    renderMonthlyReport(); 
-                });
-            });
+        const today = new Date();
+        const tripStart = new Date("2026-06-22");
+        const tripEnd = new Date("2026-06-28");
+        const tagEl = document.getElementById('tripStatusTag');
+        const countEl = document.getElementById('tripCountdownText');
+
+        if(today < tripStart) {
+            let diffDays = Math.ceil((tripStart - today) / (1000 * 60 * 60 * 24));
+            tagEl.innerText = "即將啟程"; tagEl.style.color = "var(--accent-warning)";
+            countEl.innerText = `⏳ 距離出發還剩 ${diffDays} 天`;
+        } else if(today >= tripStart && today <= tripEnd) {
+            tagEl.innerText = "🚀 遠征進行中"; tagEl.style.background = "rgba(16,185,129,0.2)"; tagEl.style.color = "var(--text-positive)";
+            countEl.innerText = "🔥 祝日本遠征順利，滿載而歸！";
+        } else {
+            tagEl.innerText = "🛬 遠征歸來"; tagEl.style.background = "rgba(56,189,248,0.2)"; tagEl.style.color = "var(--accent-blue)";
+            countEl.innerText = "✨ 行程已圓滿結束，期待下一趟冒險";
         }
 
-        document.getElementById('dynamicMonthlyTitle').innerHTML = `<i class="fa-solid fa-file-invoice-dollar"></i> ${currentSelectedYear === 'all' ? '歷史總計' : currentSelectedYear + ' 年度'}總結`;
+        // 2. 右卡：進攻 vs 防禦能量條
+        const attackVal = (latest.twStock||0) + (latest.usStock||0) + (latest.crypto||0);
+        const total = latest.assets || 1;
+        let attackPct = Math.round((attackVal / total) * 100);
+        let defPct = 100 - attackPct;
 
-        const allMonthlyStats = [];
-        for (let i = 0; i < months.length; i++) {
-            const m = months[i];
-            const current = monthlyMap[m];
-            const prev = i > 0 ? monthlyMap[months[i-1]] : null;
+        document.getElementById('gaugeAttack').style.width = attackPct + '%';
+        document.getElementById('gaugeDefense').style.width = defPct + '%';
+        document.getElementById('pctAttackText').innerText = attackPct + '%';
+        document.getElementById('pctDefenseText').innerText = defPct + '%';
+    }
 
-            const startNetWorth = prev ? prev.netWorth : 0;
-            const assetChange = prev ? current.assets - prev.assets : 0;
-            const netWorthChange = prev ? current.netWorth - prev.netWorth : 0;
-            const growthRate = startNetWorth > 0 ? ((netWorthChange / startNetWorth) * 100).toFixed(2) : 0;
-
-            allMonthlyStats.push({
-                month: m, year: m.substring(0, 4), date: current.date,
-                endAssets: current.assets, endNetWorth: current.netWorth,
-                assetChange, netWorthChange, growthRate
-            });
+    function updateDashboard(data) {
+        if (data.length === 0) return;
+        const latest = data[data.length - 1], previous = data.length > 1 ? data[data.length - 2] : null;
+        document.getElementById('displayAssets').innerText = `$${latest.assets.toLocaleString()}`; document.getElementById('displayLiabilities').innerText = `$${latest.liabilities.toLocaleString()}`; document.getElementById('displayNetWorth').innerText = `$${latest.netWorth.toLocaleString()}`;
+        if (previous) {
+            const dailyChange = latest.netWorth - previous.netWorth, dailyGrowth = ((dailyChange / previous.netWorth) * 100).toFixed(2);
+            document.getElementById('displayDailyChange').innerText = (dailyChange >= 0 ? '+' : '-') + `$${Math.abs(dailyChange).toLocaleString()}`; document.getElementById('displayDailyChange').style.color = dailyChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
+            document.getElementById('displayDailyGrowth').innerText = (dailyGrowth >= 0 ? '+' : '') + dailyGrowth + '%'; document.getElementById('displayDailyGrowth').style.color = dailyGrowth >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
         }
+    }
 
-        let filteredStats = allMonthlyStats;
-        if (currentSelectedYear !== 'all') {
-            filteredStats = allMonthlyStats.filter(s => s.year === currentSelectedYear);
-        }
-        if (filteredStats.length === 0) return;
+    function renderLineChart(data) {
+        const ctx = document.getElementById('financeChart').getContext('2d'); if (lineChart) lineChart.destroy();
+        lineChart = new Chart(ctx, { type: 'line', data: { labels: data.map(d => d.date), datasets: [ { label: '總資產', data: data.map(d => d.assets), borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.04)', fill: true, tension: 0.35, borderWidth: 2 }, { label: '淨資產', data: data.map(d => d.netWorth), borderColor: '#a855f7', borderDash: [4, 4], tension: 0.35, borderWidth: 2 }, { label: '總負債', data: data.map(d => d.liabilities), borderColor: '#ff7597', borderDash: [6, 6], tension: 0.35, borderWidth: 1.5 } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b' } } } } });
+    }
 
-        let totalNetChange = 0;
-        let totalAssetChange = 0;
-        let bestMonth = { m: '-', val: -Infinity };
-        let worstMonth = { m: '-', val: Infinity };
+    function renderDonutChart(data) {
+        if (data.length === 0) return;
+        const latest = data[data.length - 1], assets = [latest.twStock||0, latest.usStock||0, latest.crypto||0, latest.cash||0], total = assets.reduce((a,b)=>a+b, 0);
+        document.getElementById('donutTotalText').innerText = total >= 10000 ? `${(total / 10000).toFixed(1)}W` : total.toLocaleString();
+        const colors = ['#10b981', '#38bdf8', '#f59e0b', '#64748b'], labels = ['台股', '美股', 'Crypto', '現金'], legendEl = document.getElementById('donutLegend'); legendEl.innerHTML = '';
+        labels.forEach((name, i) => { if(assets[i] > 0) legendEl.innerHTML += `<li class="legend-row"><div><span class="legend-dot" style="background:${colors[i]}"></span><span style="color:var(--text-main)">${name}</span></div><span style="font-weight:700; color:var(--accent-blue); font-family:'Poppins', sans-serif;">${((assets[i] / total) * 100).toFixed(1)}%</span></li>`; });
+        const ctx = document.getElementById('donutChart').getContext('2d'); if (donutChart) donutChart.destroy();
+        donutChart = new Chart(ctx, { type: 'doughnut', data: { labels: labels, datasets: [{ data: assets, backgroundColor: colors, borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '82%', plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+    }
 
-        filteredStats.forEach((s, idx) => {
-            totalNetChange += s.netWorthChange;
-            totalAssetChange += s.assetChange;
-            if (s.netWorthChange > bestMonth.val && (s.netWorthChange !== 0 || idx > 0)) { bestMonth = { m: s.month, val: s.netWorthChange }; }
-            if (s.netWorthChange < worstMonth.val && (s.netWorthChange !== 0 || idx > 0)) { worstMonth = { m: s.month, val: s.netWorthChange }; }
-        });
-
-        if (bestMonth.val === -Infinity) bestMonth = { m: '-', val: 0 };
-        if (worstMonth.val === Infinity) worstMonth = { m: '-', val: 0 };
-
-        const fC = (val) => (val >= 0 ? '+' : '') + `$${val.toLocaleString()}`;
-        document.getElementById('msTotalNetChange').innerText = fC(totalNetChange);
-        document.getElementById('msTotalNetChange').style.color = totalNetChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
-        document.getElementById('msTotalAssetChange').innerText = fC(totalAssetChange);
-        document.getElementById('msTotalAssetChange').style.color = totalAssetChange >= 0 ? 'var(--accent-blue)' : 'var(--text-negative)';
-        document.getElementById('msBestMonth').innerText = bestMonth.m !== '-' ? `${bestMonth.m} (${fC(bestMonth.val)})` : '-';
-        document.getElementById('msWorstMonth').innerText = worstMonth.m !== '-' ? `${worstMonth.m} (${fC(worstMonth.val)})` : '-';
-
-        const ctx = document.getElementById('monthlyChart').getContext('2d');
-        if (monthlyChartObj) monthlyChartObj.destroy();
-        
-        monthlyChartObj = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: filteredStats.map(d => d.month),
-                datasets: [
-                    { type: 'line', label: '月成長率 (%)', data: filteredStats.map(d => d.growthRate), borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 2, borderDash: [5, 5], yAxisID: 'y1', tension: 0.3 },
-                    { type: 'bar', label: '當月資產變化', data: filteredStats.map(d => d.assetChange), backgroundColor: filteredStats.map(d => d.assetChange >= 0 ? '#10b981' : '#ff7597'), yAxisID: 'y', borderRadius: 4 }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { type: 'linear', display: true, position: 'left', grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } }, y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#f59e0b', callback: function(val){return val+'%'} } } } }
-        });
-
-        const tbody = document.querySelector('#monthlyTable tbody');
-        tbody.innerHTML = '';
-        [...filteredStats].reverse().forEach((item, idx, arr) => {
-            const isFirstInData = (item.month === allMonthlyStats[0].month);
-            const aChangeText = isFirstInData ? '-' : fC(item.assetChange);
-            const aColor = item.assetChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
-            
-            tbody.innerHTML += `<tr>
-                <td style="font-weight:bold; color:var(--accent-blue)">${item.month}</td>
-                <td>${item.date}</td>
-                <td>$${item.endAssets.toLocaleString()}</td>
-                <td>$${item.endNetWorth.toLocaleString()}</td>
-                <td style="color:${isFirstInData?'inherit':aColor}">${aChangeText}</td>
-                <td style="color:${isFirstInData?'inherit':aColor}">${isFirstInData ? '-' : item.growthRate + '%'}</td>
-            </tr>`;
+    function renderTable(data) {
+        const tbody = document.querySelector('#historyTable tbody'); tbody.innerHTML = '';
+        [...data].reverse().forEach(item => {
+            let timeString = item.timestamp ? (typeof item.timestamp.toDate === 'function' ? item.timestamp.toDate().toLocaleTimeString('zh-TW',{hour12:false}) : new Date(item.timestamp).toLocaleTimeString('zh-TW',{hour12:false})) : "-";
+            tbody.innerHTML += `<tr><td>${item.date}</td><td style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-regular fa-clock"></i> ${timeString}</td><td>$${(item.twStock||0).toLocaleString()}</td><td>$${(item.usStock||0).toLocaleString()}</td><td>$${(item.crypto||0).toLocaleString()}</td><td>$${(item.cash||0).toLocaleString()}</td><td style="color:var(--text-negative)">$${(item.liabilities||0).toLocaleString()}</td><td style="color:var(--text-positive)">$${(item.assets||0).toLocaleString()}</td><td style="font-weight:700; color:#fff">$${(item.netWorth||0).toLocaleString()}</td><td><button class="delete-icon-btn" onclick="deleteData('${item.id}')"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
         });
     }
 
     function renderMilestones(data) {
         if (data.length === 0) return;
-        const totalAssets = data[data.length - 1].assets || 0; 
-        let currentStageIndex = 0;
-        for(let i = 0; i < milestones.length; i++) {
-            if (totalAssets < milestones[i].target) { currentStageIndex = i; break; }
-            if (i === milestones.length - 1) currentStageIndex = i; 
-        }
-
-        const currentStage = milestones[currentStageIndex];
-        document.getElementById('msCurrentTitle').innerText = currentStage.title;
-        document.getElementById('msCurrentDesc').innerText = currentStage.desc;
-        const gap = currentStage.target - totalAssets;
-        document.getElementById('msGap').innerText = gap > 0 ? `$${gap.toLocaleString()}` : '已全數破關！';
-
-        const stageGrid = document.getElementById('stageGrid');
-        stageGrid.innerHTML = '';
+        const totalAssets = data[data.length - 1].assets || 0; let currentStageIndex = 0;
+        for(let i = 0; i < milestones.length; i++) { if (totalAssets < milestones[i].target) { currentStageIndex = i; break; } if (i === milestones.length - 1) currentStageIndex = i; }
+        const currentStage = milestones[currentStageIndex], gap = currentStage.target - totalAssets;
+        document.getElementById('msCurrentTitle').innerText = currentStage.title; document.getElementById('msCurrentDesc').innerText = currentStage.desc; document.getElementById('msGap').innerText = gap > 0 ? `$${gap.toLocaleString()}` : '已全數破關！';
+        const stageGrid = document.getElementById('stageGrid'); stageGrid.innerHTML = '';
         milestones.forEach((ms, index) => {
-            let rawPct = (totalAssets / ms.target) * 100;
-            let pct = rawPct >= 100 ? 100 : rawPct;
-            const isActive = index === currentStageIndex ? 'active' : '';
-            const barColor = pct >= 100 ? '#10b981' : ms.color;
-            let strategiesHtml = '';
-            ms.strategy.forEach(s => { strategiesHtml += `<li><i class="fa-solid fa-thumbtack" style="color:${ms.color}"></i> ${s}</li>`; });
-
-            stageGrid.innerHTML += `<div class="stage-card ${isActive}"><div class="stage-header"><div class="stage-name" style="color:${ms.color}"><i class="fa-solid fa-medal"></i> ${ms.name}</div><div class="stage-target">${(ms.target / 10000)} 萬</div></div><div class="progress-info" style="color:${barColor}">達成率: ${pct.toFixed(1)}%</div><div class="progress-track"><div class="progress-fill" style="width: ${pct}%; background-color: ${barColor};"></div></div><div style="font-size:0.85rem; color:#f1f5f9; margin-bottom:12px;">📌 目標：${ms.desc}</div><ul class="strategy-list">${strategiesHtml}</ul></div>`;
+            let pct = Math.min((totalAssets / ms.target) * 100, 100); const isActive = index === currentStageIndex ? 'active' : '', barColor = pct >= 100 ? '#10b981' : ms.color;
+            let strHtml = ''; ms.strategy.forEach(s => strHtml += `<li><i class="fa-solid fa-thumbtack" style="color:${ms.color}"></i> ${s}</li>`);
+            stageGrid.innerHTML += `<div class="stage-card ${isActive}"><div class="stage-header"><div class="stage-name" style="color:${ms.color}"><i class="fa-solid fa-medal"></i> ${ms.name}</div><div class="stage-target">${(ms.target / 10000)} 萬</div></div><div class="progress-info" style="color:${barColor}">達成率: ${pct.toFixed(1)}%</div><div class="progress-track"><div class="progress-fill" style="width: ${pct}%; background-color: ${barColor};"></div></div><div style="font-size:0.85rem; color:#f1f5f9; margin-bottom:12px;">📌 ${ms.desc}</div><ul class="strategy-list">${strHtml}</ul></div>`;
         });
     }
 
-    function updateDashboard(data) {
-        if (data.length === 0) return;
-        const latest = data[data.length - 1];
-        const previous = data.length > 1 ? data[data.length - 2] : null;
-        document.getElementById('displayAssets').innerText = `$${latest.assets.toLocaleString()}`;
-        document.getElementById('displayLiabilities').innerText = `$${latest.liabilities.toLocaleString()}`;
-        document.getElementById('displayNetWorth').innerText = `$${latest.netWorth.toLocaleString()}`;
-        if (previous) {
-            const dailyChange = latest.netWorth - previous.netWorth;
-            const dailyGrowth = ((dailyChange / previous.netWorth) * 100).toFixed(2);
-            document.getElementById('displayDailyChange').innerText = (dailyChange >= 0 ? '+' : '-') + `$${Math.abs(dailyChange).toLocaleString()}`;
-            document.getElementById('displayDailyChange').style.color = dailyChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
-            document.getElementById('displayDailyGrowth').innerText = (dailyGrowth >= 0 ? '+' : '') + dailyGrowth + '%';
-            document.getElementById('displayDailyGrowth').style.color = dailyGrowth >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
+    function renderMonthlyReport() {
+        const data = globalFinanceData; if (!data || data.length === 0) return;
+        const monthlyMap = {}; data.forEach(item => monthlyMap[item.date.substring(0, 7)] = item);
+        const months = Object.keys(monthlyMap).sort(), availableYears = [...new Set(months.map(m => m.substring(0, 4)))].sort((a,b) => b-a);
+        const radioGroup = document.getElementById('yearSelectorGroup');
+        let radioHtml = `<label class="radio-label"><input type="radio" name="yearFilter" value="all" ${currentSelectedYear === 'all' ? 'checked' : ''}><span>全部</span></label>`;
+        availableYears.forEach(y => radioHtml += `<label class="radio-label"><input type="radio" name="yearFilter" value="${y}" ${currentSelectedYear === y ? 'checked' : ''}><span>${y}</span></label>`);
+        if (radioGroup.innerHTML.trim() !== radioHtml.trim()) { radioGroup.innerHTML = radioHtml; document.querySelectorAll('input[name="yearFilter"]').forEach(radio => { radio.addEventListener('change', (e) => { currentSelectedYear = e.target.value; renderMonthlyReport(); }); }); }
+        const allMonthlyStats = [];
+        for (let i = 0; i < months.length; i++) {
+            const current = monthlyMap[months[i]], prev = i > 0 ? monthlyMap[months[i-1]] : null, startNetWorth = prev ? prev.netWorth : 0;
+            allMonthlyStats.push({ month: months[i], year: months[i].substring(0, 4), date: current.date, endAssets: current.assets, endNetWorth: current.netWorth, assetChange: prev ? current.assets - prev.assets : 0, netWorthChange: prev ? current.netWorth - prev.netWorth : 0, growthRate: startNetWorth > 0 ? (((current.netWorth - prev.netWorth) / startNetWorth) * 100).toFixed(2) : 0 });
         }
-    }
-
-    function renderTable(data) {
-        const tbody = document.querySelector('#historyTable tbody');
-        tbody.innerHTML = '';
-        [...data].reverse().forEach(item => {
-            const f = (val) => `$${(val || 0).toLocaleString()}`;
-            tbody.innerHTML += `<tr><td>${item.date}</td><td>${f(item.twStock)}</td><td>${f(item.usStock)}</td><td>${f(item.crypto)}</td><td>${f(item.cash)}</td><td style="color:var(--text-negative)">${f(item.liabilities)}</td><td style="color:var(--text-positive)">${f(item.assets)}</td><td style="font-weight:700; color:#fff">${f(item.netWorth)}</td><td><button class="delete-icon-btn" onclick="deleteData('${item.id}')"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+        const filteredStats = currentSelectedYear === 'all' ? allMonthlyStats : allMonthlyStats.filter(s => s.year === currentSelectedYear);
+        if (filteredStats.length === 0) return;
+        let totalNetChange = 0, totalAssetChange = 0, bestMonth = { m: '-', val: -Infinity }, worstMonth = { m: '-', val: Infinity };
+        filteredStats.forEach((s, idx) => {
+            totalNetChange += s.netWorthChange; totalAssetChange += s.assetChange;
+            if (s.netWorthChange > bestMonth.val && (s.netWorthChange !== 0 || idx > 0)) bestMonth = { m: s.month, val: s.netWorthChange };
+            if (s.netWorthChange < worstMonth.val && (s.netWorthChange !== 0 || idx > 0)) worstMonth = { m: s.month, val: s.netWorthChange };
         });
-    }
-
-    function renderDonutChart(data) {
-        if (data.length === 0) return;
-        const latest = data[data.length - 1];
-        const assets = [latest.twStock||0, latest.usStock||0, latest.crypto||0, latest.cash||0];
-        const total = assets.reduce((a,b)=>a+b, 0);
-
-        document.getElementById('donutTotalText').innerText = total >= 10000 ? `${(total / 10000).toFixed(1)}W` : total.toLocaleString();
-
-        const colors = ['#10b981', '#38bdf8', '#f59e0b', '#64748b'];
-        const labels = ['台股', '美股', 'Crypto', '現金'];
-
-        const legendEl = document.getElementById('donutLegend');
-        legendEl.innerHTML = '';
-        labels.forEach((name, i) => {
-            const pct = total > 0 ? ((assets[i] / total) * 100).toFixed(1) : '0.0';
-            if(assets[i] > 0) {
-                legendEl.innerHTML += `<li class="legend-row"><div><span class="legend-dot" style="background:${colors[i]}"></span><span class="legend-name">${name}</span></div><span class="legend-pct">${pct}%</span></li>`;
-            }
-        });
-
-        const ctx = document.getElementById('donutChart').getContext('2d');
-        if (donutChart) donutChart.destroy();
-        donutChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: { labels: labels, datasets: [{ data: assets, backgroundColor: colors, borderWidth: 0 }] },
-            options: { 
-                responsive: true, maintainAspectRatio: false, cutout: '82%', 
-                plugins: { legend: { display: false }, tooltip: { enabled: true } } 
-            }
-        });
-    }
-
-    function renderLineChart(data) {
-        const ctx = document.getElementById('financeChart').getContext('2d');
-        if (lineChart) lineChart.destroy();
-        lineChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: data.map(d => d.date),
-                datasets: [
-                    { label: '總資產', data: data.map(d => d.assets), borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.04)', fill: true, tension: 0.35, borderWidth: 2 },
-                    { label: '淨資產', data: data.map(d => d.netWorth), borderColor: '#a855f7', borderDash: [4, 4], tension: 0.35, borderWidth: 2 },
-                    { label: '總負債', data: data.map(d => d.liabilities), borderColor: '#ff7597', borderDash: [6, 6], tension: 0.35, borderWidth: 1.5 }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font: { size: 12 } } } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 11 } } }, y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b', font: { size: 11 } } } } }
-        });
+        const fC = (val) => (val >= 0 ? '+' : '') + `$${val.toLocaleString()}`;
+        document.getElementById('msTotalNetChange').innerText = fC(totalNetChange); document.getElementById('msTotalNetChange').style.color = totalNetChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
+        document.getElementById('msTotalAssetChange').innerText = fC(totalAssetChange); document.getElementById('msTotalAssetChange').style.color = totalAssetChange >= 0 ? 'var(--accent-blue)' : 'var(--text-negative)';
+        document.getElementById('msBestMonth').innerText = bestMonth.val !== -Infinity ? `${bestMonth.m} (${fC(bestMonth.val)})` : '-'; document.getElementById('msWorstMonth').innerText = worstMonth.val !== Infinity ? `${worstMonth.m} (${fC(worstMonth.val)})` : '-';
+        const ctx = document.getElementById('monthlyChart').getContext('2d'); if (monthlyChartObj) monthlyChartObj.destroy();
+        monthlyChartObj = new Chart(ctx, { type: 'bar', data: { labels: filteredStats.map(d => d.month), datasets: [ { type: 'line', label: '月成長率 (%)', data: filteredStats.map(d => d.growthRate), borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 2, borderDash: [5, 5], yAxisID: 'y1', tension: 0.3 }, { type: 'bar', label: '當月資產變化', data: filteredStats.map(d => d.assetChange), backgroundColor: filteredStats.map(d => d.assetChange >= 0 ? '#10b981' : '#ff7597'), yAxisID: 'y', borderRadius: 4 } ] }, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { type: 'linear', display: true, position: 'left', grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } }, y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#f59e0b' } } } } });
+        const tbody = document.querySelector('#monthlyTable tbody'); tbody.innerHTML = '';
+        [...filteredStats].reverse().forEach((item, idx) => { const isFirst = (item.month === allMonthlyStats[0].month), aColor = item.assetChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)'; tbody.innerHTML += `<tr><td style="font-weight:bold; color:var(--accent-blue)">${item.month}</td><td>${item.date}</td><td>$${item.endAssets.toLocaleString()}</td><td>$${item.endNetWorth.toLocaleString()}</td><td style="color:${isFirst?'inherit':aColor}">${isFirst?'-':fC(item.assetChange)}</td><td style="color:${isFirst?'inherit':aColor}">${isFirst?'-':item.growthRate+'%'}</td></tr>`; });
     }
 })();
 </script>
