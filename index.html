@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jason的財務戰情室 V8.6 戰略版</title>
+    <title>Jason的財務戰情室 V8.6.1 修正版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
@@ -73,14 +73,12 @@
         .legend-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.02); border-radius: 8px; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; display: inline-block; }
 
-        /* 🌟 V8.6 戰略模組雙卡片樣式 */
         .bottom-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .strategy-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .panel-header h4 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .status-tag { font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
         
-        /* 能量條量表 */
         .gauge-bar-bg { width: 100%; height: 12px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; display: flex; margin: 12px 0; }
         .gauge-part { height: 100%; transition: width 0.8s ease; }
         .stat-labels { display: flex; justify-content: space-between; font-size: 0.85rem; font-family: 'Poppins', sans-serif; }
@@ -136,13 +134,13 @@
     
     <div class="dashboard">
         <div class="card" style="border-top: 3px solid var(--text-positive);">
-            <h3><i class="fa-solid fa-vault" style="color:var(--text-positive)"></i> 總資產 </h3><div class="amount" id="displayAssets" style="color: var(--text-positive)">$0</div>
+            <h3><i class="fa-solid fa-vault" style="color:var(--text-positive)"></i> 總資產 (Assets)</h3><div class="amount" id="displayAssets" style="color: var(--text-positive)">$0</div>
         </div>
         <div class="card" style="border-top: 3px solid var(--text-negative);">
-            <h3><i class="fa-solid fa-credit-card" style="color:var(--text-negative)"></i> 總負債 </h3><div class="amount" id="displayLiabilities" style="color: var(--text-negative)">$0</div>
+            <h3><i class="fa-solid fa-credit-card" style="color:var(--text-negative)"></i> 總負債 (Liabilities)</h3><div class="amount" id="displayLiabilities" style="color: var(--text-negative)">$0</div>
         </div>
         <div class="card" style="border-top: 3px solid var(--accent-purple);">
-            <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent-purple)"></i> 總淨資產 </h3><div class="amount" id="displayNetWorth" style="color: #fff">$0</div>
+            <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent-purple)"></i> 總淨資產 (Net Worth)</h3><div class="amount" id="displayNetWorth" style="color: #fff">$0</div>
         </div>
         <div class="card" style="border-top: 3px solid var(--accent-blue);">
             <h3><i class="fa-solid fa-bolt"></i> 今日淨值波動</h3><div class="amount" id="displayDailyChange">$0</div>
@@ -181,7 +179,6 @@
         </div>
 
         <div class="bottom-widgets">
-            
             <div class="strategy-panel" style="border-left: 4px solid var(--accent-warning);">
                 <div>
                     <div class="panel-header">
@@ -222,7 +219,6 @@
                     <span>⚡ 建議策略：保持科技成長股核心，穩健扛波</span>
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -364,21 +360,20 @@ async function loadInventoryData() {
         { name: "第四階段", title: "財富雪球霸主", target: 5000000, color: "#ff7597", desc: "五百萬絕對領域！具備強大財務底氣，追求長期穩健資本利得。", strategy: [ "<strong>美股大盤:</strong> 50%", "<strong>台股大盤:</strong> 35%", "<strong>戰略備用金:</strong> 10%" ] }
     ];
 
-    db.collection(COLLECTION_NAME).orderBy("date", "asc").onSnapshot((querySnapshot) => {
+    // 🌟 修正核心：將排序基準從 "date" 改為 "timestamp"，解決同日時間錯亂的 Bug
+    db.collection(COLLECTION_NAME).orderBy("timestamp", "asc").onSnapshot((querySnapshot) => {
         globalFinanceData = []; querySnapshot.forEach((doc) => globalFinanceData.push({ id: doc.id, ...doc.data() }));
         document.getElementById('loading').style.display = 'none';
         updateDashboard(globalFinanceData); renderLineChart(globalFinanceData); renderDonutChart(globalFinanceData); renderTable(globalFinanceData); renderMilestones(globalFinanceData); renderMonthlyReport();
-        updateStrategyCards(globalFinanceData); // 🌟 驅動底部戰略雙卡片計算
+        updateStrategyCards(globalFinanceData); 
     });
 
     window.deleteData = function(id) { if(confirm('確定刪除此筆快照？')) db.collection(COLLECTION_NAME).doc(id).delete(); };
 
-    // 🌟 V8.6 計算底部硬核雙卡片邏輯
     function updateStrategyCards(data) {
         if(data.length === 0) return;
         const latest = data[data.length - 1];
         
-        // 1. 左卡：行程倒數與現金顯示
         const cash = latest.cash || 0;
         document.getElementById('tripCashDisplay').innerText = `$${cash.toLocaleString()}`;
         
@@ -400,7 +395,6 @@ async function loadInventoryData() {
             countEl.innerText = "✨ 行程已圓滿結束，期待下一趟冒險";
         }
 
-        // 2. 右卡：進攻 vs 防禦能量條
         const attackVal = (latest.twStock||0) + (latest.usStock||0) + (latest.crypto||0);
         const total = latest.assets || 1;
         let attackPct = Math.round((attackVal / total) * 100);
