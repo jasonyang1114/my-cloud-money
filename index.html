@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jason的財務戰情室 V8.6.1 修正版</title>
+    <title>Jason的財務戰情室 V8.6 戰略版</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -73,12 +73,14 @@
         .legend-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: rgba(255,255,255,0.02); border-radius: 8px; }
         .legend-dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 8px; display: inline-block; }
 
+        /* 🌟 V8.6 戰略模組雙卡片樣式 */
         .bottom-widgets { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .strategy-panel { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 16px; padding: 24px; display: flex; flex-direction: column; justify-content: space-between; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .panel-header h4 { font-size: 1rem; font-weight: 600; display: flex; align-items: center; gap: 8px; }
         .status-tag { font-size: 0.8rem; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
         
+        /* 能量條量表 */
         .gauge-bar-bg { width: 100%; height: 12px; background: rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; display: flex; margin: 12px 0; }
         .gauge-part { height: 100%; transition: width 0.8s ease; }
         .stat-labels { display: flex; justify-content: space-between; font-size: 0.85rem; font-family: 'Poppins', sans-serif; }
@@ -119,8 +121,160 @@
         .loader { border: 4px solid #1e293b; border-top: 4px solid var(--accent-purple); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 15px auto; display: none; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-        @media (max-width: 1024px) { .charts-grid, .bottom-widgets { grid-template-columns: 1fr; } .dashboard { grid-template-columns: repeat(3, 1fr); } .stage-grid, .monthly-summary-grid { grid-template-columns: repeat(2, 1fr); } }
-        @media (max-width: 640px) { .dashboard { grid-template-columns: repeat(2, 1fr); } .stage-grid { grid-template-columns: 1fr; } }
+        /* Visual refresh: refined glass surfaces, clearer hierarchy, responsive layout */
+        :root {
+            --bg-main: #080b14;
+            --bg-card: rgba(17, 24, 39, 0.78);
+            --border-color: rgba(148, 163, 184, 0.14);
+            --surface-highlight: rgba(255, 255, 255, 0.045);
+        }
+        body {
+            min-height: 100vh;
+            background:
+                radial-gradient(circle at 8% 0%, rgba(56, 189, 248, 0.15), transparent 27rem),
+                radial-gradient(circle at 92% 13%, rgba(168, 85, 247, 0.15), transparent 30rem),
+                var(--bg-main);
+            padding: 42px 24px 64px;
+        }
+        .container { max-width: 1500px; }
+        .header-section {
+            margin-bottom: 26px;
+            padding: 6px 4px;
+        }
+        .brand-eyebrow {
+            margin-bottom: 7px;
+            color: var(--accent-blue);
+            font-size: .7rem;
+            font-weight: 700;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+        }
+        h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: clamp(1.75rem, 3vw, 2.4rem);
+            letter-spacing: -.045em;
+            line-height: 1.15;
+        }
+        .exchange-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            background: rgba(56, 189, 248, 0.09);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+        }
+        .dashboard { gap: 14px; margin-bottom: 26px; }
+        .card, .chart-box, .strategy-panel, .stage-card {
+            background: linear-gradient(145deg, rgba(30, 41, 59, .86), rgba(15, 23, 42, .74));
+            box-shadow: 0 18px 40px rgba(0, 0, 0, .16), inset 0 1px 0 rgba(255,255,255,.035);
+        }
+        .card {
+            position: relative;
+            overflow: hidden;
+            min-height: 118px;
+            padding: 19px;
+            border-radius: 18px;
+            transition: transform .22s ease, border-color .22s ease;
+        }
+        .card::after {
+            content: '';
+            position: absolute;
+            width: 96px;
+            height: 96px;
+            right: -42px;
+            bottom: -54px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: .055;
+        }
+        .card:hover, .chart-box:hover, .strategy-panel:hover { transform: translateY(-3px); border-color: rgba(148, 163, 184, .28); }
+        .card h3 { margin-bottom: 13px; font-size: .72rem; letter-spacing: .08em; }
+        .card .amount { font-size: clamp(1.3rem, 1.8vw, 1.7rem); letter-spacing: -.04em; }
+        .nav-tabs {
+            gap: 6px;
+            margin-bottom: 26px;
+            padding: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            background: rgba(15, 23, 42, .55);
+            backdrop-filter: blur(16px);
+        }
+        .tab-btn { flex: 1; justify-content: center; padding: 11px 14px; border-radius: 10px; }
+        .tab-btn.active { color: #fff; background: linear-gradient(135deg, rgba(168, 85, 247, .8), rgba(56, 189, 248, .65)); border-color: transparent; box-shadow: 0 7px 18px rgba(56, 189, 248, .12); }
+        .charts-grid, .bottom-widgets { gap: 16px; }
+        .chart-box { border-radius: 18px; padding: 23px; transition: transform .22s ease, border-color .22s ease; }
+        .chart-title { margin-bottom: 24px; font-size: 1rem; letter-spacing: -.015em; }
+        .chart-title i { width: 30px; height: 30px; display: inline-grid; place-items: center; border-radius: 9px; background: var(--surface-highlight); }
+        .donut-wrapper { width: 190px; height: 190px; }
+        .donut-center .label { color: var(--text-muted); font-size: .68rem; text-transform: uppercase; letter-spacing: .13em; }
+        .donut-center .val { letter-spacing: -.05em; }
+        .custom-legend { gap: 8px; }
+        .legend-row { padding: 10px 11px; border: 1px solid rgba(255,255,255,.045); background: rgba(255,255,255,.025); }
+        .strategy-panel { min-height: 222px; border-radius: 18px; }
+        .status-tag { padding: 5px 10px; border: 1px solid currentColor; }
+        .gauge-bar-bg { height: 10px; margin: 16px 0 12px; background: rgba(255,255,255,.08); }
+        .current-level-banner { padding: 34px 24px; border-radius: 20px; background: linear-gradient(135deg, rgba(245,158,11,.16), rgba(168,85,247,.10)); box-shadow: 0 18px 40px rgba(0,0,0,.15); }
+        .current-level-banner .title { letter-spacing: -.04em; }
+        .stage-card { border-radius: 18px; min-height: 255px; }
+        .stage-card.active { box-shadow: 0 18px 40px rgba(56,189,248,.08), inset 0 1px 0 rgba(255,255,255,.06); }
+        .monthly-card { padding: 18px 14px; border-radius: 14px; background: rgba(255,255,255,.035); }
+        .monthly-card .val { letter-spacing: -.04em; }
+        .export-csv-btn { padding: 9px 13px; border-color: rgba(56,189,248,.32); color: var(--accent-blue); }
+        .export-csv-btn:hover { color: #fff; border-color: var(--accent-blue); background: rgba(56,189,248,.12); }
+        .history-table th { padding: 14px 18px; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; }
+        .history-table td { padding: 15px 18px; }
+        .history-table tbody tr { transition: background .15s ease; }
+        .history-table tbody tr:hover { background: rgba(56,189,248,.045); }
+        .delete-icon-btn:hover { transform: scale(1.12); }
+        @media (max-width: 1024px) { .charts-grid, .bottom-widgets { grid-template-columns: 1fr; } .dashboard { grid-template-columns: repeat(3, 1fr); } .stage-grid, .monthly-summary-grid { grid-template-columns: repeat(2, 1fr); } .tab-btn { flex: 0 0 auto; } }
+        @media (max-width: 640px) { body { padding: 24px 14px 42px; } .header-section { align-items: flex-start; gap: 16px; flex-direction: column; } .dashboard { grid-template-columns: repeat(2, 1fr); gap: 10px; } .card { min-height: 106px; padding: 15px; } .card:last-child { grid-column: span 2; } .nav-tabs { overflow-x: auto; } .tab-btn { font-size: .82rem; } .chart-box, .strategy-panel { padding: 17px; } .stage-grid { grid-template-columns: 1fr; } .monthly-summary-grid { grid-template-columns: 1fr 1fr; } .donut-layout { gap: 15px; flex-direction: column; align-items: stretch; } .donut-wrapper { margin: 0 auto; } .custom-legend { margin-left: 0; } }
+        /* Full dashboard redesign */
+        :root { --bg-main:#07111f; --bg-card:#0d1b2d; --border-color:rgba(160,185,215,.14); --text-main:#eef6ff; --text-muted:#8496ae; --accent-blue:#4bc7ff; --accent-purple:#8b7cff; --text-positive:#36d399; --text-negative:#fb7185; --accent-warning:#fbbf24; }
+        body { background: radial-gradient(900px 540px at 0% -10%, rgba(50,138,255,.20), transparent 65%), radial-gradient(700px 460px at 96% 7%, rgba(124,92,255,.16), transparent 64%), #07111f; }
+        .container { max-width: 1440px; }
+        .header-section { padding: 24px 26px; align-items:center; border:1px solid var(--border-color); border-radius:24px; background:linear-gradient(105deg, rgba(18,39,65,.90), rgba(10,22,39,.80)); box-shadow:0 24px 80px rgba(0,0,0,.20); }
+        .brand-eyebrow { color:#78d6ff; }
+        h1 { font-size:clamp(1.65rem, 3vw, 2.35rem); }
+        .exchange-badge { padding:11px 14px; border:1px solid rgba(75,199,255,.33); color:#a9e7ff; background:rgba(6,34,55,.66); }
+        .dashboard { grid-template-columns:1fr 1fr 1.45fr 1fr 1fr; gap:12px; }
+        .card { min-height:124px; padding:19px; border:1px solid var(--border-color) !important; border-top:1px solid var(--border-color) !important; border-radius:18px; background:linear-gradient(150deg, rgba(20,43,70,.90), rgba(10,25,44,.90)); }
+        .card:nth-child(3) { background:linear-gradient(135deg, rgba(43,46,100,.96), rgba(15,49,82,.96)); border-color:rgba(130,154,255,.48) !important; box-shadow:0 15px 34px rgba(54,97,255,.18); }
+        .card h3 { color:#9baec6; font-size:.68rem; letter-spacing:.1em; }
+        .card .amount { font-size:clamp(1.28rem,1.85vw,1.82rem); }
+        .nav-tabs { position:sticky; top:12px; z-index:3; margin:0 0 20px; padding:7px; border-radius:18px; border:1px solid var(--border-color); background:rgba(8,20,36,.82); box-shadow:0 12px 30px rgba(0,0,0,.14); }
+        .tab-btn { color:#91a4bb; }
+        .tab-btn.active { background:linear-gradient(135deg, #38bdf8, #6d75ff); color:#06111f; font-weight:700; box-shadow:0 8px 18px rgba(55,177,255,.18); }
+        .charts-grid { grid-template-columns:minmax(0, 1.6fr) minmax(355px, .9fr); gap:16px; }
+        .chart-box, .strategy-panel { border-radius:22px; border:1px solid var(--border-color); background:linear-gradient(145deg, rgba(16,36,61,.94), rgba(9,22,39,.92)); box-shadow:0 18px 50px rgba(0,0,0,.15); }
+        .chart-box { padding:24px; }
+        .chart-title { padding-bottom:16px; border-bottom:1px solid rgba(160,185,215,.10); font-size:1.05rem; }
+        .chart-title i { color:#89ddff !important; background:rgba(75,199,255,.12); }
+        .donut-layout { gap:22px; }
+        .donut-wrapper { width:205px; height:205px; flex:0 0 205px; }
+        .custom-legend { margin-left:0; }
+        .legend-row { background:rgba(255,255,255,.035); border:1px solid rgba(160,185,215,.08); padding:10px 12px; }
+        .bottom-widgets { grid-template-columns:1.15fr .85fr; gap:16px; }
+        .strategy-panel { position:relative; overflow:hidden; min-height:240px; padding:26px; border-left:1px solid var(--border-color) !important; }
+        .strategy-panel::before { content:''; position:absolute; width:220px; height:220px; right:-85px; top:-115px; border-radius:50%; opacity:.12; background:currentColor; pointer-events:none; }
+        .strategy-panel:first-child { color:#36d399; }
+        .strategy-panel:last-child { color:#4bc7ff; }
+        .strategy-panel > * { position:relative; }
+        .panel-header h4 { font-size:1.1rem; }
+        .status-tag { border:1px solid currentColor; background:rgba(255,255,255,.04) !important; }
+        .gauge-bar-bg { height:12px; border:1px solid rgba(255,255,255,.07); }
+        .current-level-banner { border-radius:24px; background:linear-gradient(125deg, rgba(255,174,34,.18), rgba(123,92,255,.18), rgba(8,28,49,.94)); border-color:rgba(250,195,79,.30); }
+        .stage-grid { gap:14px; }
+        .stage-card { min-height:270px; padding:20px; border-radius:18px; }
+        .stage-card.active { background:linear-gradient(145deg, rgba(24,66,94,.92), rgba(14,35,59,.94)); }
+        .monthly-card { background:linear-gradient(145deg, rgba(30,57,84,.76), rgba(15,32,54,.76)); border-color:rgba(160,185,215,.12); }
+        .history-table { border:1px solid rgba(160,185,215,.11); border-radius:14px; overflow:hidden; }
+        .history-table th { background:rgba(124,145,174,.09); }
+        .history-table td { border-color:rgba(160,185,215,.08); }
+        @media (max-width:1024px) { .dashboard { grid-template-columns:repeat(3,1fr); } .card:nth-child(3) { grid-column:span 1; } .charts-grid,.bottom-widgets { grid-template-columns:1fr; } }
+        @media (max-width:640px) { .header-section { padding:20px; border-radius:20px; } .dashboard { grid-template-columns:1fr 1fr; } .card:nth-child(3) { grid-column:span 2; } .card:last-child { grid-column:span 1; } .nav-tabs { top:6px; } .tab-btn { flex:0 0 auto; } .chart-box,.strategy-panel { border-radius:18px; } }
+        /* Prefer Source Han Sans; Noto Sans TC is its Google Fonts equivalent. */
+        body, button, input, select, textarea, .card .amount, .donut-center .val, .stat-labels, .progress-info, .monthly-card .val, .history-table, [style*="Poppins"] { font-family: "Source Han Sans TC", "Noto Sans TC", sans-serif !important; }
     </style>
 </head>
 <body>
@@ -128,19 +282,22 @@
 <div class="container">
 
     <div class="header-section">
-        <h1>Jason的財務戰情室 🚀</h1>
+        <div>
+            <p class="brand-eyebrow"><i class="fa-solid fa-satellite-dish"></i> Personal wealth command center</p>
+            <h1>Jason 的財務戰情室 <span aria-hidden="true">🚀</span></h1>
+        </div>
         <div class="exchange-badge"><i class="fa-solid fa-globe"></i> USD/TWD: <span id="currentRate">載入中...</span></div>
     </div>
     
     <div class="dashboard">
         <div class="card" style="border-top: 3px solid var(--text-positive);">
-            <h3><i class="fa-solid fa-vault" style="color:var(--text-positive)"></i> 總資產 (Assets)</h3><div class="amount" id="displayAssets" style="color: var(--text-positive)">$0</div>
+            <h3><i class="fa-solid fa-vault" style="color:var(--text-positive)"></i> 總資產 </h3><div class="amount" id="displayAssets" style="color: var(--text-positive)">$0</div>
         </div>
         <div class="card" style="border-top: 3px solid var(--text-negative);">
-            <h3><i class="fa-solid fa-credit-card" style="color:var(--text-negative)"></i> 總負債 (Liabilities)</h3><div class="amount" id="displayLiabilities" style="color: var(--text-negative)">$0</div>
+            <h3><i class="fa-solid fa-credit-card" style="color:var(--text-negative)"></i> 總負債 </h3><div class="amount" id="displayLiabilities" style="color: var(--text-negative)">$0</div>
         </div>
         <div class="card" style="border-top: 3px solid var(--accent-purple);">
-            <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent-purple)"></i> 總淨資產 (Net Worth)</h3><div class="amount" id="displayNetWorth" style="color: #fff">$0</div>
+            <h3><i class="fa-solid fa-shield-halved" style="color:var(--accent-purple)"></i> 總淨資產 </h3><div class="amount" id="displayNetWorth" style="color: #fff">$0</div>
         </div>
         <div class="card" style="border-top: 3px solid var(--accent-blue);">
             <h3><i class="fa-solid fa-bolt"></i> 今日淨值波動</h3><div class="amount" id="displayDailyChange">$0</div>
@@ -179,31 +336,32 @@
         </div>
 
         <div class="bottom-widgets">
-            <div class="strategy-panel" style="border-left: 4px solid var(--accent-warning);">
+            
+            <div class="strategy-panel">
                 <div>
                     <div class="panel-header">
-                        <h4 style="color:var(--accent-warning);"><i class="fa-solid fa-plane-departure"></i> 關西遠征戰略監控</h4>
-                        <span class="status-tag" id="tripStatusTag" style="background:rgba(245,158,11,0.15); color:var(--accent-warning);">計算中...</span>
+                        <h4 style="color:var(--text-positive);"><i class="fa-solid fa-shield-heart"></i> 財務安全墊</h4>
+                        <span class="status-tag" id="tripStatusTag" style="color:var(--text-positive);">同步中</span>
                     </div>
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px;">大阪·京都·奈良七日行，子彈存量防禦指標：</p>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:20px;">可立即動用的現金部位，為市場波動與日常支出的緩衝空間。</p>
                     <div style="display:flex; justify-content:space-between; align-items:baseline;">
-                        <span style="font-size:0.85rem; color:#cbd5e1;">當前實體現金預備金：</span>
+                        <span style="font-size:0.85rem; color:#cbd5e1;">目前現金與存款</span>
                         <span style="font-size:1.4rem; font-weight:700; font-family:'Poppins', sans-serif; color:var(--text-positive);" id="tripCashDisplay">$0</span>
                     </div>
                 </div>
                 <div style="margin-top:15px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05); display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted);">
-                    <span>📌 行程：06/22 - 06/28</span>
-                    <span id="tripCountdownText">倒數結算中</span>
+                    <span><i class="fa-solid fa-circle-check" style="color:var(--text-positive)"></i> 流動性監測</span>
+                    <span id="tripCountdownText">計算中</span>
                 </div>
             </div>
 
-            <div class="strategy-panel" style="border-left: 4px solid var(--accent-blue);">
+            <div class="strategy-panel">
                 <div>
                     <div class="panel-header">
-                        <h4 style="color:var(--accent-blue);"><i class="fa-solid fa-scale-unbalanced"></i> 科技純度與攻防配置比</h4>
-                        <span class="status-tag" style="background:rgba(56,189,248,0.15); color:var(--accent-blue);">高波陣型</span>
+                        <h4 style="color:var(--accent-blue);"><i class="fa-solid fa-chart-pie"></i> 投資配置雷達</h4>
+                        <span class="status-tag" style="color:var(--accent-blue);">即時分析</span>
                     </div>
-                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:6px;">矽谷尖刀部位 (進攻) vs 實體存款 (防禦) 能量條：</p>
+                    <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:6px;">投資性資產與現金部位的比例，協助掌握整體風險曝險。</p>
                     
                     <div class="gauge-bar-bg">
                         <div class="gauge-part" id="gaugeAttack" style="width:50%; background:linear-gradient(90deg, #38bdf8, #a855f7);"></div>
@@ -211,14 +369,15 @@
                     </div>
                     
                     <div class="stat-labels">
-                        <span style="color:var(--accent-blue); font-weight:600;"><i class="fa-solid fa-swords"></i> 進攻部位: <span id="pctAttackText">0%</span></span>
-                        <span style="color:#94a3b8;"><i class="fa-solid fa-shield"></i> 現金裝甲: <span id="pctDefenseText">0%</span></span>
+                        <span style="color:var(--accent-blue); font-weight:600;"><i class="fa-solid fa-arrow-trend-up"></i> 投資資產 <span id="pctAttackText">0%</span></span>
+                        <span style="color:#94a3b8;"><i class="fa-solid fa-vault"></i> 現金部位 <span id="pctDefenseText">0%</span></span>
                     </div>
                 </div>
                 <div style="margin-top:15px; padding-top:12px; border-top:1px solid rgba(255,255,255,0.05); font-size:0.8rem; color:var(--text-muted); text-align:right;">
-                    <span>⚡ 建議策略：保持科技成長股核心，穩健扛波</span>
+                    <span><i class="fa-solid fa-wand-magic-sparkles" style="color:var(--accent-blue)"></i> 以數據掌握你的風險節奏</span>
                 </div>
             </div>
+
         </div>
     </div>
 
@@ -290,6 +449,19 @@
 <script>
 const GAS_API_URL = "https://script.google.com/macros/s/AKfycbzk4LUCX9t7AxHmXEX-6a2PlQ8cjp_DhJMxTbqGbGehDEzdByk94_Nw5H_i6U_O4nUT/exec";
 
+const numberOrZero = (value) => {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : 0;
+};
+const escapeHtml = (value) => String(value ?? '').replace(/[&<>'"]/g, (char) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+}[char]));
+const csvCell = (value) => {
+    const text = String(value ?? '');
+    const safeText = /^[=+\-@]/.test(text) ? `'${text}` : text;
+    return `"${safeText.replace(/"/g, '""')}"`;
+};
+
 function switchTab(tabId) {
     document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
     document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -317,12 +489,14 @@ async function loadInventoryData() {
             if(item.category === '台股') bg = 'rgba(16, 185, 129, 0.2)';
             if(item.category === '美股') bg = 'rgba(56, 189, 248, 0.2)';
             if(item.category === 'Crypto') bg = 'rgba(245, 158, 11, 0.2)';
-            tbody.innerHTML += `<tr><td style="font-weight:700; color:#fff;">${item.ticker}</td><td><span style="background:${bg}; padding:4px 10px; border-radius:6px; font-size:0.8rem;">${item.category}</span></td><td style="font-family:'Poppins', sans-serif;">${item.shares}</td><td style="font-family:'Poppins', sans-serif;">$${cVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td style="font-family:'Poppins', sans-serif; color:var(--accent-blue);">$${prVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td style="font-family:'Poppins', sans-serif;">$${vVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td><td style="font-family:'Poppins', sans-serif; font-weight:700; color:${pColor};">${pSign}$${pVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>`;
+            tbody.innerHTML += `<tr><td style="font-weight:700; color:#fff;">${escapeHtml(item.ticker)}</td><td><span style="background:${bg}; padding:4px 10px; border-radius:6px; font-size:0.8rem;">${escapeHtml(item.category)}</span></td><td style="font-family:'Poppins', sans-serif;">${escapeHtml(item.shares)}</td><td style="font-family:'Poppins', sans-serif;">$${cVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td style="font-family:'Poppins', sans-serif; color:var(--accent-blue);">$${prVal.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</td><td style="font-family:'Poppins', sans-serif;">$${vVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td><td style="font-family:'Poppins', sans-serif; font-weight:700; color:${pColor};">${pSign}$${pVal.toLocaleString(undefined,{maximumFractionDigits:0})}</td></tr>`;
         });
     } catch (error) { tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:var(--text-negative); padding:30px;"><i class="fa-solid fa-triangle-exclamation"></i> 讀取失敗！這通常是因為 GAS 部署權限設定錯誤。請至後台確認「誰可以存取」設為所有人。</td></tr>'; }
 }
 
 (async function() { 
+    // 注意：此前端密碼只用於避免誤開頁面，不是資料安全機制。
+    // 請務必在 Firebase Console 以 Firestore 安全性規則限制讀寫權限。
     const MY_PASSWORD_HASH = "a76631241a4ad4528be06e6f6112b7211a00cefac243a6e46e6dab61f592e861"; 
     async function sha256(message) {
         const msgBuffer = new TextEncoder().encode(message);
@@ -333,7 +507,17 @@ async function loadInventoryData() {
         document.body.innerHTML = "<h1 style='color:#ff7597;text-align:center;margin-top:20%'>🚫 密碼錯誤，拒絕訪問</h1>"; throw new Error("密碼錯誤"); 
     }
 
-    fetch('https://open.er-api.com/v6/latest/USD').then(r => r.json()).then(d => document.getElementById('currentRate').innerText = d.rates.TWD.toFixed(2)).catch(() => document.getElementById('currentRate').innerText = "32.50 (預設)");
+    fetch('https://open.er-api.com/v6/latest/USD')
+        .then((response) => {
+            if (!response.ok) throw new Error('匯率服務暫時無法使用');
+            return response.json();
+        })
+        .then((data) => {
+            const rate = numberOrZero(data?.rates?.TWD);
+            if (!rate) throw new Error('匯率資料格式不正確');
+            document.getElementById('currentRate').innerText = rate.toFixed(2);
+        })
+        .catch(() => document.getElementById('currentRate').innerText = "32.50 (預設)");
 
     const firebaseConfig = { apiKey: "AIzaSyC98g3JuqPtStZ4P25YZ8trqfWpUJss3vI", authDomain: "financial-records-76092.firebaseapp.com", projectId: "financial-records-76092" };
     firebase.initializeApp(firebaseConfig);
@@ -348,9 +532,10 @@ async function loadInventoryData() {
         let csvContent = "\uFEFF日期,紀錄時間,台股(TWD),美股(TWD),Crypto(TWD),現金存款(TWD),總負債(TWD),總資產(TWD),總淨資產(TWD)\n";
         globalFinanceData.forEach(d => {
             let timeStr = d.timestamp ? (typeof d.timestamp.toDate === 'function' ? d.timestamp.toDate().toLocaleTimeString('zh-TW',{hour12:false}) : new Date(d.timestamp).toLocaleTimeString('zh-TW',{hour12:false})) : "-";
-            csvContent += `${d.date},${timeStr},${d.twStock||0},${d.usStock||0},${d.crypto||0},${d.cash||0},${d.liabilities||0},${d.assets||0},${d.netWorth||0}\n`;
+            csvContent += [d.date, timeStr, d.twStock, d.usStock, d.crypto, d.cash, d.liabilities, d.assets, d.netWorth].map(csvCell).join(',') + '\n';
         });
-        const link = document.createElement("a"); link.href = URL.createObjectURL(new Blob([csvContent], {type:'text/csv;charset=utf-8;'})); link.download = `財務戰情室_備份_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link);
+        const objectUrl = URL.createObjectURL(new Blob([csvContent], {type:'text/csv;charset=utf-8;'}));
+        const link = document.createElement("a"); link.href = objectUrl; link.download = `財務戰情室_備份_${new Date().toISOString().slice(0,10)}.csv`; document.body.appendChild(link); link.click(); document.body.removeChild(link); URL.revokeObjectURL(objectUrl);
     });
 
     const milestones = [
@@ -360,45 +545,53 @@ async function loadInventoryData() {
         { name: "第四階段", title: "財富雪球霸主", target: 5000000, color: "#ff7597", desc: "五百萬絕對領域！具備強大財務底氣，追求長期穩健資本利得。", strategy: [ "<strong>美股大盤:</strong> 50%", "<strong>台股大盤:</strong> 35%", "<strong>戰略備用金:</strong> 10%" ] }
     ];
 
-    // 🌟 修正核心：將排序基準從 "date" 改為 "timestamp"，解決同日時間錯亂的 Bug
-    db.collection(COLLECTION_NAME).orderBy("timestamp", "asc").onSnapshot((querySnapshot) => {
+    db.collection(COLLECTION_NAME).orderBy("date", "asc").onSnapshot((querySnapshot) => {
         globalFinanceData = []; querySnapshot.forEach((doc) => globalFinanceData.push({ id: doc.id, ...doc.data() }));
         document.getElementById('loading').style.display = 'none';
         updateDashboard(globalFinanceData); renderLineChart(globalFinanceData); renderDonutChart(globalFinanceData); renderTable(globalFinanceData); renderMilestones(globalFinanceData); renderMonthlyReport();
-        updateStrategyCards(globalFinanceData); 
+        updateStrategyCards(globalFinanceData); // 🌟 驅動底部戰略雙卡片計算
+    }, (error) => {
+        console.error('無法讀取 Firestore 財務資料：', error);
+        document.getElementById('loading').style.display = 'none';
+        document.querySelectorAll('.tab-content').forEach((content) => content.classList.remove('active'));
+        document.getElementById('tab-overview').classList.add('active');
+        document.getElementById('tab-overview').innerHTML = '<div class="chart-box" style="color:var(--text-negative)"><h2>無法載入財務資料</h2><p style="margin-top:10px;color:var(--text-muted)">請檢查網路連線與 Firebase Firestore 的安全性規則。</p></div>';
     });
 
     window.deleteData = function(id) { if(confirm('確定刪除此筆快照？')) db.collection(COLLECTION_NAME).doc(id).delete(); };
 
+    // 底部財務洞察卡片
     function updateStrategyCards(data) {
         if(data.length === 0) return;
         const latest = data[data.length - 1];
         
-        const cash = latest.cash || 0;
+        // 1. 左卡：現金安全墊
+        const cash = numberOrZero(latest.cash);
         document.getElementById('tripCashDisplay').innerText = `$${cash.toLocaleString()}`;
         
-        const today = new Date();
-        const tripStart = new Date("2026-06-22");
-        const tripEnd = new Date("2026-06-28");
         const tagEl = document.getElementById('tripStatusTag');
         const countEl = document.getElementById('tripCountdownText');
-
-        if(today < tripStart) {
-            let diffDays = Math.ceil((tripStart - today) / (1000 * 60 * 60 * 24));
-            tagEl.innerText = "即將啟程"; tagEl.style.color = "var(--accent-warning)";
-            countEl.innerText = `⏳ 距離出發還剩 ${diffDays} 天`;
-        } else if(today >= tripStart && today <= tripEnd) {
-            tagEl.innerText = "🚀 遠征進行中"; tagEl.style.background = "rgba(16,185,129,0.2)"; tagEl.style.color = "var(--text-positive)";
-            countEl.innerText = "🔥 祝日本遠征順利，滿載而歸！";
+        const totalAssets = numberOrZero(latest.assets);
+        const cashRatio = totalAssets > 0 ? (cash / totalAssets) * 100 : 0;
+        if (cashRatio >= 20) {
+            tagEl.innerText = '緩衝充足';
+            tagEl.style.color = 'var(--text-positive)';
+            countEl.innerText = `現金佔總資產 ${cashRatio.toFixed(1)}%`;
+        } else if (cashRatio >= 10) {
+            tagEl.innerText = '維持觀察';
+            tagEl.style.color = 'var(--accent-warning)';
+            countEl.innerText = `現金佔總資產 ${cashRatio.toFixed(1)}%`;
         } else {
-            tagEl.innerText = "🛬 遠征歸來"; tagEl.style.background = "rgba(56,189,248,0.2)"; tagEl.style.color = "var(--accent-blue)";
-            countEl.innerText = "✨ 行程已圓滿結束，期待下一趟冒險";
+            tagEl.innerText = '偏低';
+            tagEl.style.color = 'var(--text-negative)';
+            countEl.innerText = `現金佔總資產 ${cashRatio.toFixed(1)}%`;
         }
 
-        const attackVal = (latest.twStock||0) + (latest.usStock||0) + (latest.crypto||0);
-        const total = latest.assets || 1;
-        let attackPct = Math.round((attackVal / total) * 100);
-        let defPct = 100 - attackPct;
+        // 2. 右卡：投資資產 vs 現金部位
+        const attackVal = numberOrZero(latest.twStock) + numberOrZero(latest.usStock) + numberOrZero(latest.crypto);
+        const total = numberOrZero(latest.assets);
+        const attackPct = total > 0 ? Math.max(0, Math.min(100, Math.round((attackVal / total) * 100))) : 0;
+        const defPct = 100 - attackPct;
 
         document.getElementById('gaugeAttack').style.width = attackPct + '%';
         document.getElementById('gaugeDefense').style.width = defPct + '%';
@@ -409,40 +602,69 @@ async function loadInventoryData() {
     function updateDashboard(data) {
         if (data.length === 0) return;
         const latest = data[data.length - 1], previous = data.length > 1 ? data[data.length - 2] : null;
-        document.getElementById('displayAssets').innerText = `$${latest.assets.toLocaleString()}`; document.getElementById('displayLiabilities').innerText = `$${latest.liabilities.toLocaleString()}`; document.getElementById('displayNetWorth').innerText = `$${latest.netWorth.toLocaleString()}`;
+        const latestAssets = numberOrZero(latest.assets), latestLiabilities = numberOrZero(latest.liabilities), latestNetWorth = numberOrZero(latest.netWorth);
+        document.getElementById('displayAssets').innerText = `$${latestAssets.toLocaleString()}`; document.getElementById('displayLiabilities').innerText = `$${latestLiabilities.toLocaleString()}`; document.getElementById('displayNetWorth').innerText = `$${latestNetWorth.toLocaleString()}`;
         if (previous) {
-            const dailyChange = latest.netWorth - previous.netWorth, dailyGrowth = ((dailyChange / previous.netWorth) * 100).toFixed(2);
+            const previousNetWorth = numberOrZero(previous.netWorth), dailyChange = latestNetWorth - previousNetWorth;
+            const dailyGrowth = previousNetWorth !== 0 ? ((dailyChange / previousNetWorth) * 100).toFixed(2) : null;
             document.getElementById('displayDailyChange').innerText = (dailyChange >= 0 ? '+' : '-') + `$${Math.abs(dailyChange).toLocaleString()}`; document.getElementById('displayDailyChange').style.color = dailyChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
-            document.getElementById('displayDailyGrowth').innerText = (dailyGrowth >= 0 ? '+' : '') + dailyGrowth + '%'; document.getElementById('displayDailyGrowth').style.color = dailyGrowth >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
+            document.getElementById('displayDailyGrowth').innerText = dailyGrowth === null ? '-' : (dailyGrowth >= 0 ? '+' : '') + dailyGrowth + '%'; document.getElementById('displayDailyGrowth').style.color = dailyGrowth === null || dailyGrowth >= 0 ? 'var(--text-positive)' : 'var(--text-negative)';
         }
     }
 
     function renderLineChart(data) {
-        const ctx = document.getElementById('financeChart').getContext('2d'); if (lineChart) lineChart.destroy();
-        lineChart = new Chart(ctx, { type: 'line', data: { labels: data.map(d => d.date), datasets: [ { label: '總資產', data: data.map(d => d.assets), borderColor: '#38bdf8', backgroundColor: 'rgba(56, 189, 248, 0.04)', fill: true, tension: 0.35, borderWidth: 2 }, { label: '淨資產', data: data.map(d => d.netWorth), borderColor: '#a855f7', borderDash: [4, 4], tension: 0.35, borderWidth: 2 }, { label: '總負債', data: data.map(d => d.liabilities), borderColor: '#ff7597', borderDash: [6, 6], tension: 0.35, borderWidth: 1.5 } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { grid: { color: 'rgba(255, 255, 255, 0.05)' }, ticks: { color: '#64748b' } } } } });
+        const ctx = document.getElementById('financeChart').getContext('2d');
+        const assetGradient = ctx.createLinearGradient(0, 0, 0, 320);
+        assetGradient.addColorStop(0, 'rgba(75, 199, 255, 0.30)');
+        assetGradient.addColorStop(1, 'rgba(75, 199, 255, 0)');
+        if (lineChart) lineChart.destroy();
+        lineChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: data.map(d => d.date),
+                datasets: [
+                    { label: '總資產', data: data.map(d => numberOrZero(d.assets)), borderColor: '#4bc7ff', backgroundColor: assetGradient, fill: true, tension: .42, borderWidth: 3, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#4bc7ff' },
+                    { label: '淨資產', data: data.map(d => numberOrZero(d.netWorth)), borderColor: '#a78bfa', tension: .42, borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 5, pointHoverBackgroundColor: '#a78bfa' },
+                    { label: '總負債', data: data.map(d => numberOrZero(d.liabilities)), borderColor: 'rgba(251,113,133,.8)', borderDash: [7, 7], tension: .42, borderWidth: 1.5, pointRadius: 0, pointHoverRadius: 4 }
+                ]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                layout: { padding: { top: 8, right: 8, bottom: 0, left: 0 } },
+                plugins: {
+                    legend: { position: 'top', align: 'end', labels: { color: '#9eb0c7', usePointStyle: true, pointStyle: 'circle', boxWidth: 7, boxHeight: 7, padding: 17, font: { size: 12, family: 'Plus Jakarta Sans' } } },
+                    tooltip: { backgroundColor: 'rgba(8,20,36,.96)', titleColor: '#eaf4ff', bodyColor: '#b7c9dd', borderColor: 'rgba(121,177,226,.22)', borderWidth: 1, padding: 12, displayColors: true, callbacks: { label: (context) => ` ${context.dataset.label}  $${Number(context.raw).toLocaleString()}` } }
+                },
+                scales: {
+                    x: { grid: { display: false }, border: { display: false }, ticks: { color: '#70839a', maxTicksLimit: 7, maxRotation: 0, font: { size: 11 } } },
+                    y: { grid: { color: 'rgba(150,178,209,.09)', drawTicks: false }, border: { display: false }, ticks: { color: '#70839a', padding: 10, font: { size: 11 }, callback: (value) => value >= 10000 ? `${(value / 10000).toFixed(0)}萬` : value } }
+                }
+            }
+        });
     }
 
     function renderDonutChart(data) {
         if (data.length === 0) return;
-        const latest = data[data.length - 1], assets = [latest.twStock||0, latest.usStock||0, latest.crypto||0, latest.cash||0], total = assets.reduce((a,b)=>a+b, 0);
+        const latest = data[data.length - 1], assets = [numberOrZero(latest.twStock), numberOrZero(latest.usStock), numberOrZero(latest.crypto), numberOrZero(latest.cash)], total = assets.reduce((a,b)=>a+b, 0);
         document.getElementById('donutTotalText').innerText = total >= 10000 ? `${(total / 10000).toFixed(1)}W` : total.toLocaleString();
-        const colors = ['#10b981', '#38bdf8', '#f59e0b', '#64748b'], labels = ['台股', '美股', 'Crypto', '現金'], legendEl = document.getElementById('donutLegend'); legendEl.innerHTML = '';
+        const colors = ['#19c89a', '#4bc7ff', '#a78bfa', '#71839a'], labels = ['台股', '美股', 'Crypto', '現金'], legendEl = document.getElementById('donutLegend'); legendEl.innerHTML = '';
         labels.forEach((name, i) => { if(assets[i] > 0) legendEl.innerHTML += `<li class="legend-row"><div><span class="legend-dot" style="background:${colors[i]}"></span><span style="color:var(--text-main)">${name}</span></div><span style="font-weight:700; color:var(--accent-blue); font-family:'Poppins', sans-serif;">${((assets[i] / total) * 100).toFixed(1)}%</span></li>`; });
         const ctx = document.getElementById('donutChart').getContext('2d'); if (donutChart) donutChart.destroy();
-        donutChart = new Chart(ctx, { type: 'doughnut', data: { labels: labels, datasets: [{ data: assets, backgroundColor: colors, borderWidth: 0 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '82%', plugins: { legend: { display: false }, tooltip: { enabled: false } } } });
+        donutChart = new Chart(ctx, { type: 'doughnut', data: { labels: labels, datasets: [{ data: assets, backgroundColor: ['#19c89a', '#4bc7ff', '#a78bfa', '#71839a'], borderColor: '#0d1b2d', borderWidth: 5, hoverOffset: 9, spacing: 2 }] }, options: { responsive: true, maintainAspectRatio: false, cutout: '72%', rotation: -90, plugins: { legend: { display: false }, tooltip: { backgroundColor: 'rgba(8,20,36,.96)', titleColor: '#eaf4ff', bodyColor: '#b7c9dd', borderColor: 'rgba(121,177,226,.22)', borderWidth: 1, padding: 12, callbacks: { label: (context) => ` ${context.label}  $${Number(context.raw).toLocaleString()}` } } } } });
     }
 
     function renderTable(data) {
         const tbody = document.querySelector('#historyTable tbody'); tbody.innerHTML = '';
         [...data].reverse().forEach(item => {
             let timeString = item.timestamp ? (typeof item.timestamp.toDate === 'function' ? item.timestamp.toDate().toLocaleTimeString('zh-TW',{hour12:false}) : new Date(item.timestamp).toLocaleTimeString('zh-TW',{hour12:false})) : "-";
-            tbody.innerHTML += `<tr><td>${item.date}</td><td style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-regular fa-clock"></i> ${timeString}</td><td>$${(item.twStock||0).toLocaleString()}</td><td>$${(item.usStock||0).toLocaleString()}</td><td>$${(item.crypto||0).toLocaleString()}</td><td>$${(item.cash||0).toLocaleString()}</td><td style="color:var(--text-negative)">$${(item.liabilities||0).toLocaleString()}</td><td style="color:var(--text-positive)">$${(item.assets||0).toLocaleString()}</td><td style="font-weight:700; color:#fff">$${(item.netWorth||0).toLocaleString()}</td><td><button class="delete-icon-btn" onclick="deleteData('${item.id}')"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
+            tbody.innerHTML += `<tr><td>${escapeHtml(item.date)}</td><td style="color:var(--text-muted); font-size:0.85rem;"><i class="fa-regular fa-clock"></i> ${escapeHtml(timeString)}</td><td>$${numberOrZero(item.twStock).toLocaleString()}</td><td>$${numberOrZero(item.usStock).toLocaleString()}</td><td>$${numberOrZero(item.crypto).toLocaleString()}</td><td>$${numberOrZero(item.cash).toLocaleString()}</td><td style="color:var(--text-negative)">$${numberOrZero(item.liabilities).toLocaleString()}</td><td style="color:var(--text-positive)">$${numberOrZero(item.assets).toLocaleString()}</td><td style="font-weight:700; color:#fff">$${numberOrZero(item.netWorth).toLocaleString()}</td><td><button class="delete-icon-btn" data-id="${escapeHtml(item.id)}"><i class="fa-solid fa-trash-can"></i></button></td></tr>`;
         });
+        tbody.querySelectorAll('.delete-icon-btn').forEach((button) => button.addEventListener('click', () => window.deleteData(button.dataset.id)));
     }
 
     function renderMilestones(data) {
         if (data.length === 0) return;
-        const totalAssets = data[data.length - 1].assets || 0; let currentStageIndex = 0;
+        const totalAssets = numberOrZero(data[data.length - 1].assets); let currentStageIndex = 0;
         for(let i = 0; i < milestones.length; i++) { if (totalAssets < milestones[i].target) { currentStageIndex = i; break; } if (i === milestones.length - 1) currentStageIndex = i; }
         const currentStage = milestones[currentStageIndex], gap = currentStage.target - totalAssets;
         document.getElementById('msCurrentTitle').innerText = currentStage.title; document.getElementById('msCurrentDesc').innerText = currentStage.desc; document.getElementById('msGap').innerText = gap > 0 ? `$${gap.toLocaleString()}` : '已全數破關！';
@@ -464,8 +686,9 @@ async function loadInventoryData() {
         if (radioGroup.innerHTML.trim() !== radioHtml.trim()) { radioGroup.innerHTML = radioHtml; document.querySelectorAll('input[name="yearFilter"]').forEach(radio => { radio.addEventListener('change', (e) => { currentSelectedYear = e.target.value; renderMonthlyReport(); }); }); }
         const allMonthlyStats = [];
         for (let i = 0; i < months.length; i++) {
-            const current = monthlyMap[months[i]], prev = i > 0 ? monthlyMap[months[i-1]] : null, startNetWorth = prev ? prev.netWorth : 0;
-            allMonthlyStats.push({ month: months[i], year: months[i].substring(0, 4), date: current.date, endAssets: current.assets, endNetWorth: current.netWorth, assetChange: prev ? current.assets - prev.assets : 0, netWorthChange: prev ? current.netWorth - prev.netWorth : 0, growthRate: startNetWorth > 0 ? (((current.netWorth - prev.netWorth) / startNetWorth) * 100).toFixed(2) : 0 });
+            const current = monthlyMap[months[i]], prev = i > 0 ? monthlyMap[months[i-1]] : null;
+            const endAssets = numberOrZero(current.assets), endNetWorth = numberOrZero(current.netWorth), previousAssets = prev ? numberOrZero(prev.assets) : 0, startNetWorth = prev ? numberOrZero(prev.netWorth) : 0;
+            allMonthlyStats.push({ month: months[i], year: months[i].substring(0, 4), date: current.date, endAssets, endNetWorth, assetChange: prev ? endAssets - previousAssets : 0, netWorthChange: prev ? endNetWorth - startNetWorth : 0, growthRate: startNetWorth > 0 ? (((endNetWorth - startNetWorth) / startNetWorth) * 100).toFixed(2) : 0 });
         }
         const filteredStats = currentSelectedYear === 'all' ? allMonthlyStats : allMonthlyStats.filter(s => s.year === currentSelectedYear);
         if (filteredStats.length === 0) return;
@@ -482,7 +705,7 @@ async function loadInventoryData() {
         const ctx = document.getElementById('monthlyChart').getContext('2d'); if (monthlyChartObj) monthlyChartObj.destroy();
         monthlyChartObj = new Chart(ctx, { type: 'bar', data: { labels: filteredStats.map(d => d.month), datasets: [ { type: 'line', label: '月成長率 (%)', data: filteredStats.map(d => d.growthRate), borderColor: '#f59e0b', backgroundColor: '#f59e0b', borderWidth: 2, borderDash: [5, 5], yAxisID: 'y1', tension: 0.3 }, { type: 'bar', label: '當月資產變化', data: filteredStats.map(d => d.assetChange), backgroundColor: filteredStats.map(d => d.assetChange >= 0 ? '#10b981' : '#ff7597'), yAxisID: 'y', borderRadius: 4 } ] }, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { type: 'linear', display: true, position: 'left', grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b' } }, y1: { type: 'linear', display: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#f59e0b' } } } } });
         const tbody = document.querySelector('#monthlyTable tbody'); tbody.innerHTML = '';
-        [...filteredStats].reverse().forEach((item, idx) => { const isFirst = (item.month === allMonthlyStats[0].month), aColor = item.assetChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)'; tbody.innerHTML += `<tr><td style="font-weight:bold; color:var(--accent-blue)">${item.month}</td><td>${item.date}</td><td>$${item.endAssets.toLocaleString()}</td><td>$${item.endNetWorth.toLocaleString()}</td><td style="color:${isFirst?'inherit':aColor}">${isFirst?'-':fC(item.assetChange)}</td><td style="color:${isFirst?'inherit':aColor}">${isFirst?'-':item.growthRate+'%'}</td></tr>`; });
+        [...filteredStats].reverse().forEach((item) => { const isFirst = (item.month === allMonthlyStats[0].month), aColor = item.assetChange >= 0 ? 'var(--text-positive)' : 'var(--text-negative)'; tbody.innerHTML += `<tr><td style="font-weight:bold; color:var(--accent-blue)">${escapeHtml(item.month)}</td><td>${escapeHtml(item.date)}</td><td>$${item.endAssets.toLocaleString()}</td><td>$${item.endNetWorth.toLocaleString()}</td><td style="color:${isFirst?'inherit':aColor}">${isFirst?'-':fC(item.assetChange)}</td><td style="color:${isFirst?'inherit':aColor}">${isFirst?'-':item.growthRate+'%'}</td></tr>`; });
     }
 })();
 </script>
